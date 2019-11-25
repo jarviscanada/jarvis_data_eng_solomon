@@ -1,28 +1,35 @@
-#!/bin/sh
-su centos
+#! /bin/bash
+### script usage
+#./scripts/psql_docker.sh start|stop [db_password]
 
-#start docker
-#understand why we use || in this case
-systemctl status docker || systemctl start docker
+operation=$1
 
-#get psql docker image
-docker pull postgres
+if [[ -z "$1" ]]; then
+	echo "Usage: psql_docker.sh start|stop [db_password]"
+	exit 1
+fi
 
-#psql docker docs https://hub.docker.com/_/postgres
-#set password for default user `postgres`
-export PGPASSWORD='password'
-#create a local volumn to persist data
-docker volume create pgdata
-#run psql
-docker run --rm --name jrvs-psql -e POSTGRES_PASSWORD=$PGPASSWORD -d -v pgdata:/var/lib/postgresql/data -p 5432:5432 postgres
-#check running status
-docker ps
+if [[ -z "$2" ]]; then
+	break	
+else
+	db_password=$2
+	export PGPASSWORD="$db_password"
+fi
 
-#install psql CLI client
-sudo yum install -y postgresql
+case "$operation" in
+	start)
+		docker run --rm --name jrvs-psql -e POSTGRES_PASSWORD=$PGPASSWORD -d -v pgdata:/var/lib/postgresql/data -p 5432:5432 postgres
+		psql -h localhost -U postgres
+		;;	
+	stop)
+		docker stop jrvs-psql
+		;;
+	stops)
+		
+		;;
+	*) 
+		echo "Usage: psql_docker.sh start|stop [db_password]"
+		exit 1
+esac
 
-#Connect to psql instance uing psql REPL (read?eval?print loop)
-psql -h localhost -U postgres -W
-
-#show all databases
-postgres=# \l
+exit 0
