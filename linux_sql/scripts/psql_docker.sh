@@ -24,9 +24,6 @@ case "$operation" in
 	stop)
 		docker stop jrvs-psql
 		;;
-	stops)
-		
-		;;
 	*) 
 		echo "Usage: psql_docker.sh start|stop [db_password]"
 		exit 1
