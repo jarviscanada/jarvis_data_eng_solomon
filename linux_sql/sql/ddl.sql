@@ -24,8 +24,8 @@ CREATE TABLE PUBLIC.host_usage
 	host_id  SERIAL UNIQUE NOT NULL REFERENCES host_info(id),
         host_name        VARCHAR NOT NULL,
 	memory_free    INT NOT NULL,
-	cpu_idel      REAL NOT NULL,
-	cpu_kernel     REAL NOT NULL,
+	cpu_idle      REAL NOT NULL,
+	cpu_kernel     VARCHAR NOT NULL,
 	disk_io        INT NOT NULL,
 	disk_available INT NOT NULL, 
 	PRIMARY KEY("timestamp", host_id)
