@@ -6,14 +6,14 @@ DROP TABLE IF EXISTS PUBLIC.host_infO;
 CREATE TABLE PUBLIC.host_info
 (
 	id               SERIAL UNIQUE  NOT NULL, 
-	hostname         VARCHAR NOT NULL UNIQUE, 
+	host             VARCHAR NOT NULL UNIQUE, 
 	cpu_number       INT NOT NULL,
 	cpu_architecture VARCHAR(6) NOT NULL,
 	cpu_model        VARCHAR NOT NULL,
 	cpu_mhz          REAL NOT NULL,
 	L2_cache         INT NOT NULL,
 	total_mem        INT NOT NULL,
-	"timestamp"       TIMESTAMP NOT NULL,
+	"timestamp"      TIMESTAMP NOT NULL,
 	PRIMARY KEY(id)
 );
 
