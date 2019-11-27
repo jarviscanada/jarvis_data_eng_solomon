@@ -2,7 +2,7 @@ DROP DATABASE IF EXISTS host_agent CASCADE
 CREATE DATABASE host_agent;
 \c host_agent;
 
-DROP TABLE IF EXISTS PUBLIC.host_infO;
+DROP TABLE IF EXISTS PUBLIC.host_info;
 CREATE TABLE PUBLIC.host_info
 (
 	id               SERIAL UNIQUE  NOT NULL, 
