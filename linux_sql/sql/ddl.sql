@@ -5,7 +5,7 @@ CREATE DATABASE host_agent;
 DROP TABLE IF EXISTS PUBLIC.host_infO;
 CREATE TABLE PUBLIC.host_info
 (
-	id               SERIAL NOT NULL, 
+	id               SERIAL UNIQUE  NOT NULL, 
 	hostname         VARCHAR NOT NULL UNIQUE, 
 	cpu_number       INT NOT NULL,
 	cpu_architecture VARCHAR(6) NOT NULL,
@@ -21,7 +21,7 @@ DROP TABLE IF EXISTS PUBLIC.host_usage;
 CREATE TABLE PUBLIC.host_usage 
 ( 
 	"timestamp"    TIMESTAMP NOT NULL, 
-	host_id  SERIAL NOT NULL REFERENCES host_info(id),
+	host_id  SERIAL UNIQUE NOT NULL REFERENCES host_info(id),
 	memory_free    INT NOT NULL,
 	cpu_idel      REAL NOT NULL,
 	cpu_kernel     REAL NOT NULL,
