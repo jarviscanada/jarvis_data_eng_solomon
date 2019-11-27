@@ -1,8 +1,8 @@
-DROP DATABASE IF EXISTS host_agent CASCADE
+DROP DATABASE IF EXISTS host_agent;
 CREATE DATABASE host_agent;
 \c host_agent;
 
-DROP TABLE IF EXISTS PUBLIC.host_info CASCADE
+DROP TABLE IF EXISTS PUBLIC.host_info;
 CREATE TABLE PUBLIC.host_info
 (
 	id               SERIAL UNIQUE  NOT NULL, 
@@ -17,7 +17,7 @@ CREATE TABLE PUBLIC.host_info
 	PRIMARY KEY(id)
 );
 
-DROP TABLE IF EXISTS PUBLIC.host_usage CASCADE
+DROP TABLE IF EXISTS PUBLIC.host_usage;
 CREATE TABLE PUBLIC.host_usage 
 ( 
 	"timestamp"    TIMESTAMP NOT NULL, 
