@@ -13,10 +13,11 @@ host_password=$5
 
 #Verify number of arguments is sufficient
 if [ $# -ne 5 ]; then
-	echo "Invalid number of arguments, 5 are required" >&2
+        echo "Invalid number of arguments, 5 are required" >&2
         echo "[Usage] ./scripts/host_usage.sh psql_host psql_port db_name psql_user psql_password" >&2
         exit 1
 fi
+
 export PGPASSWORD=$host_password #Set environmental variable for psql db password
 
 vmstat_out=$(vmstat --stats --unit M && vmstat --disk-sum --unit M && vmstat -wt) #Appends command outputs to variable
@@ -38,7 +39,14 @@ insert_query=$(echo "INSERT INTO host_usage(timestamp, host_id, "'host_name'", m
 
 #Connect to host_agent database with user postgres (using env var for password)
 #on psql port; execute and echo the insert query
-psql -h $psql_host -p $psql_port -U $host_user -w -d $db_name -c "$insert_query" -e
+psql -h $psql_host -p $psql_port -U $host_user -w -d $db_name -c "$insert_query" -e)
+
+#If cron logs do not exist, add cron job
+if [[ -z $(cat /tmp/host_usage.log) ]]; then	
+	cronjob="bash ${PWD}/host_usage.sh > /tmp/host_usage.log"
+	(crontab -l | egrep -v -F "$cronjob"; echo "*/1 * * * * $cronjob") | crontab -
+fi
+
 echo "[$current_time] Inserted usage data"
 
 exit 0
