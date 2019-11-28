@@ -39,7 +39,7 @@ insert_query=$(echo "INSERT INTO host_usage(timestamp, host_id, "'host_name'", m
 
 #Connect to host_agent database with user postgres (using env var for password)
 #on psql port; execute and echo the insert query
-psql -h $psql_host -p $psql_port -U $host_user -w -d $db_name -c "$insert_query" -e)
+psql -h $psql_host -p $psql_port -U $host_user -w -d $db_name -c "$insert_query" -e
 
 #If cron logs do not exist, add cron job
 if [[ -z $(cat /tmp/host_usage.log) ]]; then	
