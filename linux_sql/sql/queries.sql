@@ -1,4 +1,4 @@
-k--Return table of host computer information, ordered by total memory, highest to lowest.
+--Return table of host computer information, ordered by total memory, highest to lowest.
 SELECT 
   host_info.cpu_number, 
   host_info.id, 
@@ -42,4 +42,3 @@ FROM
   INNER JOIN PUBLIC.host_info ON host_info.id = host_usage.host_id 
 ORDER BY 
   used_memory_percentage DESC;
-
