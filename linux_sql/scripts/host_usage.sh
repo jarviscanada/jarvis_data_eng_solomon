@@ -42,9 +42,9 @@ insert_query=$(echo "INSERT INTO host_usage(timestamp, host_id, "'host_name'", m
 psql -h $psql_host -p $psql_port -U $host_user -w -d $db_name -c "$insert_query" -e
 
 #If cron logs do not exist, add cron job
-if [[ -z $(cat /tmp/host_usage.log) ]]; then	
-	cronjob="bash ${PWD}/host_usage.sh > /tmp/host_usage.log"
-	(crontab -l | egrep -v -F "$cronjob"; echo "*/1 * * * * $cronjob") | crontab -
+if [[ -z $(cat /tmp/host_usage.log) ]]; then
+	cronjob="bash ${PWD}/host_usage.sh $host_name $psql_port $db_name $host_user $PGPASSWORD > /tmp/host_usage.log"
+	echo -e "$(echo $(crontab -l | egrep -v "$cronjob"))\n$(echo "*/1 * * * * $cronjob")" | crontab -
 fi
 
 echo "[$current_time] Inserted usage data"

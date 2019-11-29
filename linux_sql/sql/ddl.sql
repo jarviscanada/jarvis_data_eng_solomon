@@ -21,7 +21,7 @@ DROP TABLE IF EXISTS PUBLIC.host_usage;
 CREATE TABLE PUBLIC.host_usage 
 ( 
 	"timestamp"    TIMESTAMP NOT NULL, 
-	host_id  SERIAL UNIQUE NOT NULL REFERENCES host_info(id),
+	host_id  SERIAL NOT NULL REFERENCES host_info(id),
         host_name        VARCHAR NOT NULL,
 	memory_free    INT NOT NULL,
 	cpu_idle      REAL NOT NULL,
