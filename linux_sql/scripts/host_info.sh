@@ -1,8 +1,4 @@
 #! /bin/bash
-# Script usage
-#./scripts/host_info.sh psql_host psql_port db_name psql_user psql_password
-# Example
-#./scripts/host_info.sh "localhost" 5432 "host_agent" "postgres" "mypassword"
 
 #Parse script arguments and place in appropriate variables
 psql_host=$1

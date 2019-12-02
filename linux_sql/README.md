@@ -63,3 +63,17 @@ A set of practical PostgreSQL queries that produce results which would be useful
 #What was the average free memory for all machines over the last 5 minutes?
 #etc.
 ```
+
+## Improvements
+
+- In order to improve script flexibility, references to specifics (i.e. PostgreSQL users, database names, etc.) should be removed
+
+- Attempt to streamline SQL queries in an attempt to improve readability
+
+- Editing *ddl.sql* in order to remove the need to directly drop tables/databases
+
+- Cleaning up host specifications/usage variables to be more readable
+
+- Increase number of host specifications to add for monitoring purposes
+
+  *...And more that I can't think of at the moment*
