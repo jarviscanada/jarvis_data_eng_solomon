@@ -1,48 +1,64 @@
 package ca.jrvs.apps.grep;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.List;
 
-public abstract class JavaGrep {
-    String regEx;
-    File rootPath;
-    File outFile;
+public interface JavaGrep {
 
-    public String getRegEx() {
-        return regEx;
-    }
+    /**
+     * Top level search workflow
+     *
+     * @throws IOException
+     */
+    void process() throws IOException;
 
-    public void setRegEx(String regEx) {
-        this.regEx = regEx;
-    }
+    /**
+     * Traverse a given directory and return all files
+     *
+     * @param rootDir input directory
+     * @return files under the rootDir
+     */
+    List<File> listFiles(String rootDir);
 
-    public File getRootPath() {
-        return rootPath;
-    }
+    /**
+     * Read a file and return all the lines
+     * <p>
+     * Explain FileReader, BufferedReader, and character encoding
+     *
+     * @param inputFile file to be read
+     * @return lines
+     * @throws IllegalArgumentException if a given inputFile is not a file
+     */
+    List<String> readLines(File inputFile);
 
-    public void setRootPath(File rootPath) {
-        this.rootPath = rootPath;
-    }
+    /**
+     * check if a line contains the regex pattern (passed by user)
+     *
+     * @param line input string
+     * @return true if there is a match
+     */
+    boolean containsPattern(String line);
 
-    public File getOutFile() {
-        return outFile;
-    }
+    /**
+     * Write lines to a file
+     * <p>
+     * Explore: FileOutputStream, OutputStreamWriter, and BufferedWriter
+     *
+     * @param lines matched line
+     * @throws IOException if write failed
+     */
+    void writeToFile(List<String> lines) throws IOException;
 
-    public void setOutFile(File outFile) {
-        this.outFile = outFile;
-    }
+    String getRootPath();
 
-    public boolean isDirectory(File file) {
-        return file.isDirectory();
-    }
+    void setRootPath(String rootPath);
 
-    public boolean isFile(File file) {
-        return file.isFile();
-    }
+    String getRegex();
 
-    public void searchCurrentDir() {
-    }
+    void setRegex(String regex);
 
-    public void addResultToOutputFile() {
-    }
+    String getOutFile();
 
+    void setOutFile(String outFile);
 }
