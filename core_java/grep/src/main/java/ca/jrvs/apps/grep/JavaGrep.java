@@ -31,12 +31,18 @@ public abstract class JavaGrep {
         this.outFile = outFile;
     }
 
-    public boolean isDirectory(File file){ return file.isDirectory();}
+    public boolean isDirectory(File file) {
+        return file.isDirectory();
+    }
 
-    public boolean isFile(File file){ return file.isFile();}
+    public boolean isFile(File file) {
+        return file.isFile();
+    }
 
-    public void searchCurrentDir(){}
+    public void searchCurrentDir() {
+    }
 
-    public void addResultToOutputFile(){}
+    public void addResultToOutputFile() {
+    }
 
 }
