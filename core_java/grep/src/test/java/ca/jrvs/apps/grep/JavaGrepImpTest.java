@@ -4,8 +4,13 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.List;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.Arrays;
 
+import static java.util.Arrays.*;
 import static org.junit.Assert.*;
 
 public class JavaGrepImpTest {
@@ -14,6 +19,8 @@ public class JavaGrepImpTest {
   String outputFile;
   String root;
   String regex;
+  ArrayList<File> testList;
+  ArrayList<String> testListName;
 
   @Before
   public void setUp() throws Exception {
@@ -21,7 +28,22 @@ public class JavaGrepImpTest {
     inputFile = "grep.out";
     outputFile = "grep.out";
     root = ".";
-    regex = "(grep)";
+    regex = ".*(xml).*";
+
+    testList = new ArrayList<File>();
+    testList.add(new File("./README.md"));
+    testList.add(new File("./grep.out"));
+    testList.add(new File("./pom.xml"));
+    testList.add(new File("./grep.iml"));
+
+    testListName = new ArrayList<String>();
+    testListName.add("./README.md");
+    testListName.add("./grep.out");
+    testListName.add("./pom.xml");
+    testListName.add("./grep.iml");
+    grepImp.setRegex(regex);
+    grepImp.setRootPath(root);
+    grepImp.setOutFile(outputFile);
   }
 
   @After
@@ -31,46 +53,32 @@ public class JavaGrepImpTest {
     outputFile = null;
     root = null;
     regex = null;
+    testList = null;
   }
 
   @Test
   public void listFiles() {
-    assertTrue(new List<String> {"grep", "grep.out", "jbdc", "README.md", "twitter"}, grepImp.listFiles(root));
+    assertEquals(testList, grepImp.listFiles(root));
   }
 
   @Test
   public void readLines() {
+    assertEquals(testListName, grepImp.readLines(new File(inputFile)));
   }
 
   @Test
   public void containsPattern() {
+    assertTrue(grepImp.containsPattern(testList.get(2).getName()));
+    assertFalse(grepImp.containsPattern(testList.get(3).getName()));
   }
 
   @Test
   public void writeToFile() {
-  }
-
-  @Test
-  public void getRootPath() {
-  }
-
-  @Test
-  public void setRootPath() {
-  }
-
-  @Test
-  public void getRegex() {
-  }
-
-  @Test
-  public void setRegex() {
-  }
-
-  @Test
-  public void getOutFile() {
-  }
-
-  @Test
-  public void setOutFile() {
+    try {
+      grepImp.writeToFile(testListName);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    assertEquals(grepImp.readLines(new File(inputFile)), testListName);
   }
 }

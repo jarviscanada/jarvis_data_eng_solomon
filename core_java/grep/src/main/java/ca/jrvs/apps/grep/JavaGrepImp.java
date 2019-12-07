@@ -3,14 +3,11 @@ package ca.jrvs.apps.grep;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Pattern;
 
 
 public class JavaGrepImp implements JavaGrep {
@@ -61,99 +58,88 @@ public class JavaGrepImp implements JavaGrep {
   @Override
   public void process() throws IOException {
     File outputFile = new File(this.getOutFile());
-    List<String> outFileContent = new ArrayList<>(readLines(outputFile));
+    List<String> outFileCurrentContent = new ArrayList<>(readLines(outputFile));
+    List<File> rootDirFiles = this.listFiles(this.getRootPath());
 
-    for (File filename:listFiles(this.getRootPath())) {
-      if (containsPattern(filename.getName())) {
-        outFileContent.add(filename.getName());
+    for (String line : outFileCurrentContent) {
+      if (!this.containsPattern(line)) {
+        outFileCurrentContent.remove(line);
+      }
+      if (outFileCurrentContent.size() == 0) {
+        break;
       }
     }
-    writeToFile(outFileContent);
+
+    for (File file : rootDirFiles) {
+      if (this.containsPattern(file.getName())) {
+        outFileCurrentContent.add(file.getPath());
+      }
+    }
+
+    writeToFile(outFileCurrentContent);
   }
 
   @Override
   public List<File> listFiles(String rootDir) {
-    List<File> listedFiles = new ArrayList<>();
-    File root = new File(rootDir);
-    File[] dirContents;
-    if (root.exists()) {
-      if (root.isFile()) {
-        listedFiles.add(root);
+    List<File> filesListed = new ArrayList<>();
+    File[] listedFiles = new File(rootDir).listFiles();
+
+    if (listedFiles == null) {
+      return null;
+    }
+
+    for (File file : listedFiles) {
+      if (file.isFile()) {
+        filesListed.add(file);
       }
-      if (root.isDirectory()) {
-        listedFiles.add(root);
-        dirContents = root.listFiles();
-        if (!dirContents.equals(null)) {
-          listedFiles.addAll(Arrays.asList(dirContents));
-          listedFiles.addAll(listFiles(root.getAbsolutePath()));
-        }
+      if (file.isDirectory()) {
+        filesListed.add(file);
       }
     }
-    return listedFiles;
+
+    return filesListed;
   }
 
   @Override
   public List<String> readLines(File inputFile) throws IllegalArgumentException {
     List<String> linesRead = new ArrayList<>();
-    BufferedReader bufferedReader = null;
 
-    if (inputFile.exists()) {
-      if (inputFile.isFile() && inputFile.canRead()) {
-        try {
-          bufferedReader = new BufferedReader(new FileReader(inputFile));
-        } catch (FileNotFoundException e) {
-          e.printStackTrace();
-        }
-        String newLineRead = null;
-        try {
-          newLineRead = bufferedReader.readLine();
-        } catch (IOException e) {
-          e.printStackTrace();
-        }
-        while (!newLineRead.equals(null)) {
-          linesRead.add(newLineRead);
-          try {
-            newLineRead = bufferedReader.readLine();
-          } catch (IOException e) {
-            e.printStackTrace();
-          }
-        }
-        try {
-          bufferedReader.close();
-        } catch (IOException e) {
-          e.printStackTrace();
-        }
-      } else {
-        try {
-          if (!(inputFile.createNewFile() && inputFile.setReadable(true) && inputFile.setWritable(true))) {
-            throw new IOException("Unable to create file");
-          }
-        } catch (IOException e) {
-          e.printStackTrace();
-        }
+    BufferedReader bufferedReader = null;
+    try {
+      bufferedReader = new BufferedReader(new FileReader(inputFile));
+      String currentLine = bufferedReader.readLine();
+
+      while (currentLine != null) {
+        linesRead.add(currentLine);
+        currentLine = bufferedReader.readLine();
       }
+      bufferedReader.close();
+    } catch (IOException ioex) {
+      ioex.printStackTrace();
     }
+
     return linesRead;
   }
 
   @Override
   public boolean containsPattern(String line) {
-    return Pattern.compile(this.getRegex()).matcher(line).matches();
+    return line.matches(getRegex());
   }
 
   @Override
   public void writeToFile(List<String> lines) throws IOException {
-    if (!lines.equals(null)) {
       BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(this.getOutFile()));
 
       for (String line : lines) {
-        bufferedWriter.write(line);
-        bufferedWriter.newLine();
+        try {
+          bufferedWriter.write(line);
+          bufferedWriter.newLine();
+        } catch (IOException ioex) {
+          bufferedWriter.close();
+          throw new IOException("Unable to write to file");
+        }
       }
       bufferedWriter.close();
-    } else {
-      throw new IOException("Unable to write to file");
-    }
   }
 
   @Override
