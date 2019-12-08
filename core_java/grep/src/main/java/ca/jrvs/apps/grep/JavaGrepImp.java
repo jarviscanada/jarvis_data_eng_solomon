@@ -71,7 +71,7 @@ public class JavaGrepImp implements JavaGrep {
     }
 
     for (File file : rootDirFiles) {
-      if (this.containsPattern(file.getName())) {
+      if (this.containsPattern(file.getName()) && !outFileCurrentContent.contains(file.getPath())) {
         outFileCurrentContent.add(file.getPath());
       }
     }
@@ -93,7 +93,7 @@ public class JavaGrepImp implements JavaGrep {
         filesListed.add(file);
       }
       if (file.isDirectory()) {
-        filesListed.add(file);
+        filesListed.addAll(listFiles(file.getPath()));
       }
     }
 
@@ -109,7 +109,7 @@ public class JavaGrepImp implements JavaGrep {
       bufferedReader = new BufferedReader(new FileReader(inputFile));
       String currentLine = bufferedReader.readLine();
 
-      while (currentLine != null) {
+      while (currentLine != null && !linesRead.contains(currentLine)) {
         linesRead.add(currentLine);
         currentLine = bufferedReader.readLine();
       }
@@ -128,18 +128,18 @@ public class JavaGrepImp implements JavaGrep {
 
   @Override
   public void writeToFile(List<String> lines) throws IOException {
-      BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(this.getOutFile()));
+    BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(this.getOutFile()));
 
-      for (String line : lines) {
-        try {
-          bufferedWriter.write(line);
-          bufferedWriter.newLine();
-        } catch (IOException ioex) {
-          bufferedWriter.close();
-          throw new IOException("Unable to write to file");
-        }
+    for (String line : lines) {
+      try {
+        bufferedWriter.write(line);
+        bufferedWriter.newLine();
+      } catch (IOException ioex) {
+        bufferedWriter.close();
+        throw new IOException("Unable to write to file");
       }
-      bufferedWriter.close();
+    }
+    bufferedWriter.close();
   }
 
   @Override
