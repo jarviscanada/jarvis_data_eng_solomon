@@ -71,7 +71,7 @@ public class JavaGrepImp implements JavaGrep {
     }
 
     for (File file : rootDirFiles) {
-      if (this.containsPattern(file.getName()) && !outFileCurrentContent.contains(file.getPath())) {
+      if (this.containsPattern(file.getName()) && !outFileCurrentContent.contains(file.getName())) {
         outFileCurrentContent.add(file.getPath());
       }
     }
