@@ -1,15 +1,14 @@
 package ca.jrvs.apps.practice;
 
+import static org.junit.Assert.*;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
 import java.util.List;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
-
-import static org.junit.Assert.*;
 
 public class LambdaStreamExcImpTest {
     LambdaStreamExcImp lse;
@@ -40,16 +39,11 @@ public class LambdaStreamExcImpTest {
         List<Double> sqrtStreamList = lse.toList(sqrtStream.boxed());
 
         lse.printMessages(strStreamList.toArray(new String[6]),
-                lse.getLambdaPrinter("strStream>>","<<"));
-
+        lse.getLambdaPrinter("strStream>>","<<"));
         lse.printMessages(filteredStrStreamList.toArray(new String[3]), lse.getLambdaPrinter("filteredStrStream>>","<<"));
-
         lse.printMessages(upperCaseStreamList.toArray(new String[5]), lse.getLambdaPrinter("upperCaseStream>>","<<"));
-
         lse.printMessages(sqrtStreamList.toArray(new String[30]), lse.getLambdaPrinter("sqrtStream>>","<<"));
-
         lse.printOdd(intStreamArr, lse.getLambdaPrinter("Odd number:", "!"));
-
         assertEquals("Check class result after flatNestedInt", "Stream<Integer>", lse.flatNestedInt(nestedListInt).getClass().getSimpleName());
     }
 }
