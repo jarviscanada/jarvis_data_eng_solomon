@@ -1,12 +1,13 @@
 package ca.jrvs.apps.grep;
 
+import com.sun.xml.internal.fastinfoset.tools.FI_DOM_Or_XML_DOM_SAX_SAXEvent;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,35 +36,28 @@ public class JavaGrepLambdaImp extends JavaGrepImp {
 
   @Override
   public void process() throws IOException {
-    Path rootPath = new File(this.getRootPath()).toPath();
-    List<String> fileData =
-            new ArrayList<>(readLines(new File(this.getOutFile())));
-    FileOutputStream outputStream = new FileOutputStream(new File(this.getOutFile()));
+    File rootDir = new File(this.getOutFile());
+    List<String> fileData = readLines(rootDir);
 
-    fileData.addAll(listFiles(this.rootPath).stream()
-            .map(File::getName)
+    rootDir.delete();
+    rootDir.createNewFile();
+
+    fileData.addAll(listFiles(this.rootPath)
+            .stream()
+            .map(File::getPath)
+            .filter(line -> !fileData.contains(line) &&  containsPattern(line))
             .collect(Collectors.toList()));
 
-    Byte[] fileDataBytes =
-      (Byte[]) fileData.stream().map(
-              line -> {
-                byte[] arr = line.getBytes(StandardCharsets.UTF_8);
-                Byte[] returnArray = new Byte[arr.length];
-                int index = 0;
-                for (byte b : arr) {
-                  returnArray[index++] = b;
-                }
-                return returnArray;
-              }).toArray();
-
-    byte[] fileDataPrimitiveBytes = new byte[fileDataBytes.length];
-
-    int index = 0;
-    for (Byte byteObject : fileDataBytes) {
-      fileDataPrimitiveBytes[index++] = byteObject;
-    }
-
-    outputStream.write(fileDataPrimitiveBytes);
+    fileData.forEach((String line) -> {
+      try {
+        FileOutputStream outputStream =
+                new FileOutputStream(new File(this.getOutFile()), true);
+        outputStream.write((line + "\n").getBytes(StandardCharsets.UTF_8));
+        outputStream.close();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    });
   }
 
   /**
@@ -88,8 +82,10 @@ public class JavaGrepLambdaImp extends JavaGrepImp {
   public List<File> listFiles(String rootDir) {
     Path rootDirPath = new File(rootDir).toPath();
     try {    //Returns the file list from generated from traversing the directories and mapping them
-            //from Path to File objects.
-      return Files.list(rootDirPath).map(Path::toFile).collect(Collectors.toList());
+      //from Path to File objects.
+      return Files.walk(rootDirPath)
+              .map(Path::toFile)
+              .collect(Collectors.toList());
     } catch (IOException e) {
       e.printStackTrace();
     }
