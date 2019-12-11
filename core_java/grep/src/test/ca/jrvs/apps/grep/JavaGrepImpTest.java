@@ -25,22 +25,22 @@ public class JavaGrepImpTest {
   @Before
   public void setUp() throws Exception {
     grepImp = new JavaGrepImp();
-    inputFile = "grep.out";
-    outputFile = "grep.out";
-    root = ".";
+    inputFile = "ca.jrvs.apps.grep.grep.grep.out";
+    outputFile = "ca.jrvs.apps.grep.grep.grep.out";
+    root = "";
     regex = ".*(xml).*";
 
     testList = new ArrayList<File>();
     testList.add(new File("./README.md"));
-    testList.add(new File("./grep.out"));
+    testList.add(new File("./ca.jrvs.apps.grep.grep.grep.out"));
     testList.add(new File("./pom.xml"));
-    testList.add(new File("./grep.iml"));
+    testList.add(new File("./ca.jrvs.apps.grep.grep.grep.iml"));
 
     testListName = new ArrayList<String>();
     testListName.add("./README.md");
-    testListName.add("./grep.out");
+    testListName.add("./ca.jrvs.apps.grep.grep.grep.out");
     testListName.add("./pom.xml");
-    testListName.add("./grep.iml");
+    testListName.add("./ca.jrvs.apps.grep.grep.grep.iml");
     grepImp.setRegex(regex);
     grepImp.setRootPath(root);
     grepImp.setOutFile(outputFile);
