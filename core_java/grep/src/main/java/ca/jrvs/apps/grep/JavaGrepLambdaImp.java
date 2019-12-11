@@ -1,7 +1,5 @@
 package ca.jrvs.apps.grep;
 
-import com.sun.xml.internal.fastinfoset.tools.FI_DOM_Or_XML_DOM_SAX_SAXEvent;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -85,6 +83,7 @@ public class JavaGrepLambdaImp extends JavaGrepImp {
       //from Path to File objects.
       return Files.walk(rootDirPath)
               .map(Path::toFile)
+              .filter(File::isFile)
               .collect(Collectors.toList());
     } catch (IOException e) {
       e.printStackTrace();
