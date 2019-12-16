@@ -1,6 +1,6 @@
 <project>
     <modelVersion>4.0.0</modelVersion>
-    <groupId>ca.jrvs.appssss</groupId>
+    <groupId>ca.jrvs.apps</groupId>
     <artifactId>jdbc</artifactId>
     <version>1.0-SNAPSHOT</version>
     <build>
