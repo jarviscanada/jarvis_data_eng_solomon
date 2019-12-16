@@ -69,5 +69,5 @@ public class OrderLine {
               + ", productVariety='" + productVariety + '\''
               + ", productPrice=" + productPrice
               + '}';
-   }
+  }
 }

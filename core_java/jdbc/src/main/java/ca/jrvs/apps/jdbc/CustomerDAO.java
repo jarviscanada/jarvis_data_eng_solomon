@@ -1,7 +1,6 @@
 package ca.jrvs.apps.jdbc;
 
 import ca.jrvs.apps.jdbc.utils.DataAccessObject;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,6 +14,7 @@ public class CustomerDAO extends DataAccessObject<Customer> {
 
   private static final String GET_ONE = "SELECT customer_id, first_name, last_name, "
           + "email, phone, address, city, state, zipcode FROM customer WHERE customer_id=?";
+
   public CustomerDAO(Connection connection) {
     super(connection);
   }
@@ -49,7 +49,7 @@ public class CustomerDAO extends DataAccessObject<Customer> {
         customer.setState(rs.getString("state"));
         customer.setZipCode(rs.getString("zipcode"));
       }
-    }catch (SQLException e) {
+    } catch (SQLException e) {
       e.printStackTrace();
       throw new RuntimeException(e);
     }
@@ -58,7 +58,28 @@ public class CustomerDAO extends DataAccessObject<Customer> {
 
   @Override
   public List<Customer> findAll() {
-    return null;
+    List<Customer> customerList = new ArrayList<>();
+    try (PreparedStatement statement = this.connection.prepareStatement(GET_ALL_LMT);) {
+      statement.setString(1, "ALL");
+      ResultSet rs = statement.executeQuery();
+      while (rs.next()) {
+        Customer customer = new Customer();
+        customer.setId(rs.getLong("customer_id"));
+        customer.setFirstName(rs.getString("first_name"));
+        customer.setLastName(rs.getString("last_name"));
+        customer.setEmail(rs.getString("email"));
+        customer.setPhone(rs.getString("phone"));
+        customer.setAddress(rs.getString("address"));
+        customer.setCity(rs.getString("city"));
+        customer.setState(rs.getString("state"));
+        customer.setZipCode(rs.getString("zipcode"));
+        customerList.add(customer);
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+      throw new RuntimeException(e);
+    }
+    return customerList;
   }
 
   @Override
@@ -143,10 +164,10 @@ public class CustomerDAO extends DataAccessObject<Customer> {
 
   public List<Customer> findAllPaged(int limit, int pageNumber) {
     List<Customer> customers = new ArrayList<>();
-    int offset = ((pageNumber-1) * limit);
+    int offset = ((pageNumber - 1) * limit);
     try (PreparedStatement statement = this.connection.prepareStatement(GET_ALL_PAGED);) {
-      if (limit<1) {
-        limit=10;
+      if (limit < 1) {
+        limit = 10;
       }
       statement.setInt(1, limit);
       statement.setInt(2, offset);

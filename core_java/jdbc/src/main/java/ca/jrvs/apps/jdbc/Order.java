@@ -1,7 +1,6 @@
 package ca.jrvs.apps.jdbc;
 
 import ca.jrvs.apps.jdbc.utils.DataTransferObject;
-
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;

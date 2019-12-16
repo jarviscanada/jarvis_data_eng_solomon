@@ -2,34 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e3c2035c-3cb4-4ff7-a091-65082664a658" name="Default Changelist" comment="Added JDBCExecutor and other class files">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/checkstyle-idea.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/core_java.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/junitgenerator-prj-settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_4_13_rc_2.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_hamcrest_hamcrest_core_1_3.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_postgresql_postgresql_42_2_5.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/grep/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/grep/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/jdbc/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/jdbc/jdbc.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/jdbc/src/main/java/ca/jrvs/apps/jdbc/Customer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/jdbc/src/main/java/ca/jrvs/apps/jdbc/CustomerDAO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/jdbc/src/main/java/ca/jrvs/apps/jdbc/DatabaseConnectionManager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/jdbc/src/main/java/ca/jrvs/apps/jdbc/JDBCExecutor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/jdbc/src/main/java/ca/jrvs/apps/jdbc/Order.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/jdbc/src/main/java/ca/jrvs/apps/jdbc/OrderDAO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/jdbc/src/main/java/ca/jrvs/apps/jdbc/OrderLine.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/jdbc/src/main/java/ca/jrvs/apps/jdbc/utils/DataAccessObject.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/jdbc/src/main/java/ca/jrvs/apps/jdbc/utils/DataTransferObject.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/jdbc/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/jdbc/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jdbc/jdbc.iml" beforeDir="false" afterPath="$PROJECT_DIR$/jdbc/jdbc.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jdbc/src/main/java/ca/jrvs/apps/jdbc/CustomerDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/jdbc/src/main/java/ca/jrvs/apps/jdbc/CustomerDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jdbc/src/main/java/ca/jrvs/apps/jdbc/JDBCExecutor.java" beforeDir="false" afterPath="$PROJECT_DIR$/jdbc/src/main/java/ca/jrvs/apps/jdbc/JDBCExecutor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jdbc/src/main/java/ca/jrvs/apps/jdbc/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/jdbc/src/main/java/ca/jrvs/apps/jdbc/Order.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jdbc/src/main/java/ca/jrvs/apps/jdbc/OrderDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/jdbc/src/main/java/ca/jrvs/apps/jdbc/OrderDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jdbc/src/main/java/ca/jrvs/apps/jdbc/OrderLine.java" beforeDir="false" afterPath="$PROJECT_DIR$/jdbc/src/main/java/ca/jrvs/apps/jdbc/OrderLine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jdbc/src/main/java/ca/jrvs/apps/jdbc/utils/DataAccessObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/jdbc/src/main/java/ca/jrvs/apps/jdbc/utils/DataAccessObject.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -115,6 +97,9 @@
       </list>
     </option>
   </component>
+  <component name="StructureViewFactory">
+    <option name="AUTOSCROLL_FROM_SOURCE" value="true" />
+  </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -177,6 +162,22 @@
       <screen x="0" y="0" width="1600" height="875" />
     </state>
     <state x="578" y="180" width="424" height="480" key="FileChooserDialogImpl/0.0.1600.875@0.0.1600.875" timestamp="1576467025940" />
+    <state width="1554" height="230" key="GridCell.Tab.0.bottom" timestamp="1576519274212">
+      <screen x="0" y="0" width="1600" height="875" />
+    </state>
+    <state width="1554" height="230" key="GridCell.Tab.0.bottom/0.0.1600.875@0.0.1600.875" timestamp="1576519274212" />
+    <state width="1554" height="230" key="GridCell.Tab.0.center" timestamp="1576519274210">
+      <screen x="0" y="0" width="1600" height="875" />
+    </state>
+    <state width="1554" height="230" key="GridCell.Tab.0.center/0.0.1600.875@0.0.1600.875" timestamp="1576519274210" />
+    <state width="1554" height="230" key="GridCell.Tab.0.left" timestamp="1576519274209">
+      <screen x="0" y="0" width="1600" height="875" />
+    </state>
+    <state width="1554" height="230" key="GridCell.Tab.0.left/0.0.1600.875@0.0.1600.875" timestamp="1576519274209" />
+    <state width="1554" height="230" key="GridCell.Tab.0.right" timestamp="1576519274211">
+      <screen x="0" y="0" width="1600" height="875" />
+    </state>
+    <state width="1554" height="230" key="GridCell.Tab.0.right/0.0.1600.875@0.0.1600.875" timestamp="1576519274211" />
     <state x="361" y="0" width="1024" height="841" key="SettingsEditor" timestamp="1576469127013">
       <screen x="0" y="0" width="1600" height="875" />
     </state>
@@ -189,9 +190,9 @@
       <screen x="0" y="0" width="1600" height="875" />
     </state>
     <state x="464" y="190" key="run.anything.popup/0.0.1600.875@0.0.1600.875" timestamp="1576468126671" />
-    <state x="463" y="168" width="672" height="678" key="search.everywhere.popup" timestamp="1576465501172">
+    <state x="463" y="168" width="672" height="678" key="search.everywhere.popup" timestamp="1576519087121">
       <screen x="0" y="0" width="1600" height="875" />
     </state>
-    <state x="463" y="168" width="672" height="678" key="search.everywhere.popup/0.0.1600.875@0.0.1600.875" timestamp="1576465501172" />
+    <state x="463" y="168" width="672" height="678" key="search.everywhere.popup/0.0.1600.875@0.0.1600.875" timestamp="1576519087121" />
   </component>
 </project>

@@ -6,10 +6,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
-public abstract class DataAccessObject <T extends DataTransferObject> {
+public abstract class DataAccessObject<T extends DataTransferObject> {
+  protected static final String LAST_VAL = "SELECT last_value FROM ";
+  protected static final String CUSTOMER_SEQUENCE = "hp_customer_seq";
   protected final Connection connection;
-  protected final static String LAST_VAL = "SELECT last_value FROM ";
-  protected final static String CUSTOMER_SEQUENCE = "hp_customer_seq";
 
   public DataAccessObject(Connection connection) {
     super();
@@ -17,9 +17,13 @@ public abstract class DataAccessObject <T extends DataTransferObject> {
   }
 
   public abstract T findById(long id);
+  
   public abstract List<T> findAll();
+  
   public abstract T update(T dto);
+  
   public abstract T create(T dto);
+  
   public abstract void delete(long id);
 
   protected int getLastVal(String sequence) {
