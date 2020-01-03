@@ -1,8 +1,8 @@
-package ca.jrvs.apps.twitter.example;
+package example;
 
-import static ca.jrvs.apps.twitter.example.JsonParser.companyStr;
+import static example.JsonParser.companyStr;
 import static org.junit.Assert.*;
-import ca.jrvs.apps.twitter.example.dto.Company;
+import example.dto.Company;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

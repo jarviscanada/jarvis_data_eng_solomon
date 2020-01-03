@@ -1,7 +1,7 @@
-package ca.jrvs.apps.twitter.example;
+package ca.jrvs.apps.example;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.*;
-import ca.jrvs.apps.twitter.example.dto.Company;
+import ca.jrvs.apps.example.dto.Company;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
