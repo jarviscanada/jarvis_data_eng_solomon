@@ -3,6 +3,7 @@ package ca.jrvs.apps.twitter.model;
 import ca.jrvs.apps.twitter.dto.Coordinates;
 import ca.jrvs.apps.twitter.dto.Entities;
 import com.fasterxml.jackson.annotation.*;
+
 import java.util.Date;
 
 @JsonPropertyOrder({
@@ -52,7 +53,7 @@ public class Tweet {
                 @JsonProperty("retweet_count") int retweetCount,
                 @JsonProperty("favorite_count") int favouriteCount,
                 @JsonProperty("favorited") boolean favourited,
-                @JsonProperty("retweeted")  boolean retweeted) {
+                @JsonProperty("retweeted") boolean retweeted) {
     this.setCreatedAt(createdAt);
     this.setId(id);
     this.setIdString(idString);
@@ -63,6 +64,9 @@ public class Tweet {
     this.setFavouriteCount(favouriteCount);
     this.setFavourited(favourited);
     this.setRetweeted(retweeted);
+  }
+  
+  public Tweet() {
   }
   
   public Tweet(org.springframework.social.twitter.api.Tweet realTweet) {

@@ -1,12 +1,12 @@
 package ca.jrvs.apps.twitter;
-
 import ca.jrvs.apps.twitter.model.Tweet;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.net.URI;
+
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 
 public class TwitterCrdDaoIntTest {
   String tempTweetId;
@@ -17,34 +17,36 @@ public class TwitterCrdDaoIntTest {
   String tokenSecret;
   TwitterHttpHelper twitterHttpHelper;
   TwitterCrdDao twitterCrdDao;
+  Tweet realTweet;
   
   @Before
-  public void setUp () throws Exception {
-    sampleTweetId = "1213125870149414919"; //Replace with new tweet id from my timeline for testing
+  public void setUp() throws Exception {
     consumerKey = System.getenv("consumerKey");
     consumerSecret = System.getenv("consumerSecret");
     accessToken = System.getenv("accessToken");
     tokenSecret = System.getenv("tokenSecret");
     twitterHttpHelper = new TwitterHttpHelper(consumerKey, consumerSecret, accessToken, tokenSecret);
     twitterCrdDao = new TwitterCrdDao(twitterHttpHelper);
-    tempTweetId = sampleTweetId;
+    realTweet = twitterCrdDao.createObjectFromHttpResponse(twitterHttpHelper.httpGet(
+        new URI("https://api.twitter.com/1.1/statuses/" +
+                    "user_timeline.json?screen_name=scblake5&count=1")), Tweet.class);
   }
   
   @After
-  public void tearDown () throws Exception {
+  public void tearDown() throws Exception {
     consumerKey = null;
     consumerSecret = null;
     accessToken = null;
     tokenSecret = null;
     twitterHttpHelper = null;
     twitterCrdDao = null;
+    realTweet = null;
   }
 
-@Test
-  public void integrationTest () {
-    String expectedTweetBody = "httpPost test @ t:";
+  @Test(expected = RuntimeException.class)
+  public void integrationTest() {
+    String expectedTweetBody = "httpPost test @ t";
     
-    Tweet realTweet = twitterCrdDao.findById(tempTweetId);
     realTweet.setText(realTweet.getText().substring(0, expectedTweetBody.length())
                           + " " + System.currentTimeMillis());
     Tweet testTweet = twitterCrdDao.create(realTweet);
@@ -55,10 +57,8 @@ public class TwitterCrdDaoIntTest {
         // millisecond addition, which is used to make the tweets unique
         expectedTweetBody);
     
-    Tweet deletedTweet = twitterCrdDao.deleteById(tempTweetId);
-    realTweet = twitterCrdDao.findById(sampleTweetId);
-    
-    assertNotEquals(deletedTweet.getText(), realTweet.getText());
+    Tweet deletedTweet = twitterCrdDao.deleteById(realTweet.getIdString());
+    realTweet = twitterCrdDao.findById(realTweet.getIdString());
   }
   
 }

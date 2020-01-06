@@ -8,6 +8,7 @@ import org.apache.http.HttpException;
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
 
+import javax.inject.Inject;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -23,6 +24,7 @@ public class TwitterCrdDao implements CrdDao<Tweet, String> {
   
   private static final int HTTP_OK = 200;
   
+  @Inject
   private HttpHelper httpHelper;
   
   public TwitterCrdDao(HttpHelper httpHelper) {
@@ -119,7 +121,7 @@ public class TwitterCrdDao implements CrdDao<Tweet, String> {
     return stringBuilder;
   }
 
-  private <T>  T createObjectFromHttpResponse(HttpResponse httpResponse,
+  public <T>  T createObjectFromHttpResponse(HttpResponse httpResponse,
                                               Class<T> objectClass) throws Exception {
     if (httpResponse == null) {
       throw new IllegalArgumentException("HttpResponse must not be null");
@@ -129,6 +131,10 @@ public class TwitterCrdDao implements CrdDao<Tweet, String> {
                                   + httpResponse.getStatusLine().getStatusCode());
     }
     String entityAsJsonString = EntityUtils.toString(httpResponse.getEntity());
+    if (entityAsJsonString.startsWith("[")) { //If returning a single tweet as part of a
+      // timeline, remove from array
+      entityAsJsonString = entityAsJsonString.substring(1, entityAsJsonString.length() - 1);
+    }
     ObjectMapper objectMapper = new ObjectMapper();
     objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
     return ((T) objectMapper.readValue(entityAsJsonString, objectClass));
