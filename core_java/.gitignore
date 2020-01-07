@@ -1,0 +1,7 @@
+.idea/
+grep/target
+twitter/target
+jdbc/target
+jdbc/SQL-Scripts/
+twitter/.idea/
+twitter/twitter.iml
