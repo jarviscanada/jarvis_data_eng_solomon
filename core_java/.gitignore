@@ -1,1 +1,7 @@
-/jdbc/SQL-Scripts/
+jdbc/SQL-Scripts/
+.idea/
+grep/target
+twitter/target
+twitter/twitter.iml
+jdbc/target
+jdbc/.idea/

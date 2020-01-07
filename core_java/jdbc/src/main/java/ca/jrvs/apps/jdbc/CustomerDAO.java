@@ -1,10 +1,8 @@
 package ca.jrvs.apps.jdbc;
 
 import ca.jrvs.apps.jdbc.utils.DataAccessObject;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -119,6 +117,11 @@ public class CustomerDAO extends DataAccessObject<Customer> {
 
   @Override
   public Customer create(Customer dto) {
+    try {
+      this.connection.setAutoCommit(false);
+    } catch (SQLException noAutocommitFail) {
+      throw new RuntimeException(noAutocommitFail);
+    }
     try (PreparedStatement statement = this.connection.prepareStatement(INSERT);) {
       statement.setString(1, dto.getFirstName());
       statement.setString(2, dto.getLastName());
@@ -130,9 +133,14 @@ public class CustomerDAO extends DataAccessObject<Customer> {
       statement.setString(8, dto.getZipCode());
       statement.execute();
       int id = this.getLastVal(CUSTOMER_SEQUENCE);
+      this.connection.commit();
       return this.findById(id);
     } catch (SQLException e) {
-      e.printStackTrace();
+      try {
+        this.connection.rollback();
+      } catch (SQLException rollbackFail) {
+        throw new RuntimeException(rollbackFail);
+      }
       throw new RuntimeException(e);
     }
   }
@@ -194,11 +202,21 @@ public class CustomerDAO extends DataAccessObject<Customer> {
 
   @Override
   public void delete(long id) {
-    try (PreparedStatement statement = this.connection.prepareStatement(DELETE);) {
-      statement.setLong(1, id);
-      statement.execute();
-    } catch (SQLException e) {
-      e.printStackTrace();
+    try {
+      this.connection.setAutoCommit(false);
+      try(PreparedStatement preparedStatement = this.connection.prepareStatement(DELETE)) {
+        preparedStatement.setLong(1, id);
+        preparedStatement.execute();
+        this.connection.commit();
+      } catch(SQLException ex) {
+        try {
+          this.connection.rollback();
+        } catch(SQLException e) {
+          throw new SQLTransactionRollbackException(e);
+        }
+        throw new RuntimeException(ex);
+      }
+    } catch(SQLException e) {
       throw new RuntimeException(e);
     }
   }
