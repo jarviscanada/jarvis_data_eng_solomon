@@ -4,3 +4,4 @@ twitter/twitter.iml
 twitter/target
 jdbc/target
 grep/target
+jdbc/.idea/
