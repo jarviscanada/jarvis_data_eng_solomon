@@ -23,25 +23,25 @@ import java.util.Date;
 public class Tweet {
   @JsonProperty("created_at")
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "EEE MMM dd HH:mm:ss Z yyyy")
-  private Date createdAt;
+  private Date createdAt = null;
   @JsonProperty("id")
-  private long id;
+  private long id = 0;
   @JsonProperty("id_str")
-  private String idString;
+  private String idString = null;
   @JsonProperty("text")
-  private String text;
+  private String text = null;
   @JsonProperty("entities")
-  private Entities entities;
+  private Entities entities = null;
   @JsonProperty("coordinates")
-  private Coordinates coordinates;
+  private Coordinates coordinates = null;
   @JsonProperty("retweet_count")
-  private int retweetCount;
+  private int retweetCount = 0;
   @JsonProperty("favorite_count")
-  private int favouriteCount;
+  private int favouriteCount = 0;
   @JsonProperty("favorited")
-  private boolean favourited;
+  private boolean favourited  = false;
   @JsonProperty("retweeted")
-  private boolean retweeted;
+  private boolean retweeted = false;
 
   @JsonCreator
   public Tweet(@JsonProperty("created_at") Date createdAt,
