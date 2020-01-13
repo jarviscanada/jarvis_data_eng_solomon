@@ -64,9 +64,7 @@ public class TwitterServiceUnitTest {
     ids.add("190071992540740993");
   
     when(twitterCrdDao.create(tweet)).thenReturn(tweet);
-    when(twitterCrdDao.create(tweet2)).thenReturn(tweet2);
     when(twitterCrdDao.findById("90071992540740993")).thenReturn(tweet);
-    when(twitterCrdDao.findById("190071992540740993")).thenReturn(tweet2);
     when(twitterCrdDao.deleteById("90071992540740993")).thenReturn(tweet);
     when(twitterCrdDao.deleteById("190071992540740993")).thenReturn(tweet2);
   }

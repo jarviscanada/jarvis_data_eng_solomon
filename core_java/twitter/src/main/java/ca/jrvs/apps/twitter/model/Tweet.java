@@ -69,19 +69,6 @@ public class Tweet {
   public Tweet() {
   }
   
-  public Tweet(org.springframework.social.twitter.api.Tweet realTweet) {
-    this.createdAt = realTweet.getCreatedAt();
-    this.id = realTweet.getId();
-    this.idString = realTweet.getIdStr();
-    this.text = realTweet.getText();
-    this.entities = (Entities) realTweet.getEntities();
-    this.coordinates = new Coordinates();
-    this.retweetCount = realTweet.getRetweetCount();
-    this.favouriteCount = realTweet.getFavoriteCount();
-    this.favourited = realTweet.isFavorited();
-    this.retweeted = realTweet.isRetweeted();
-  }
-  
   @JsonGetter("created_at")
   public Date getCreatedAt() {
       return createdAt;

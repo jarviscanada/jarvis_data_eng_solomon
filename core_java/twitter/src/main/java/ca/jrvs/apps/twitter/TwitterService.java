@@ -3,11 +3,9 @@ package ca.jrvs.apps.twitter;
 import ca.jrvs.apps.twitter.model.Tweet;
 
 import javax.inject.Inject;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.*;
 
 import static java.lang.StrictMath.abs;
 import static java.lang.StrictMath.pow;
@@ -43,32 +41,49 @@ public class TwitterService implements Service {
    */
   @Override
   public Tweet showTweet(String id, String[] fields) {
-    Tweet shownTweet = new Tweet();
-    //List of all fields within the Tweet class (createdAt, id_str, etc.)
-    List<Field> tweetFields = Arrays.stream(Tweet.class.getDeclaredFields())
-                                  .collect(Collectors.toList());
     validateTweetParameters(id, null);
-    
     Tweet foundTweet = twitterCrdDao.findById(id);
+  
+    Tweet shownTweet = new Tweet();
+    Map<String, Method> methodMap = new HashMap<>();
+    Method setterMethod = null;
+    Method getterMethod = null;
+  
+    Arrays.stream(Tweet.class.getDeclaredMethods())
+        .forEach((Method method) -> methodMap.put(method.getName(), method));
     
-    //Find fields within Tweet objects, search field list for said field, if not there, set to null
-    //else, set to foundTweet's value
-    Arrays.stream(fields).forEach(
-        (String tweetField) -> {
-          Field field = null;
+    for (String providedField : fields) {
+      String methodNamePattern = ".*"
+                               + "["
+                               + providedField.substring(0, 1)
+                               + providedField.substring(0, 1).toUpperCase()
+                               + "]"
+                               + providedField.substring(1) + "$";
+      
+      for (String key : methodMap.keySet()) {
+        if (key.matches(methodNamePattern)) {
+          if (key.substring(0, 3).matches("set")) {
+            setterMethod = methodMap.get(key);
+          }
+          if (key.substring(0, 3).matches("get")) {
+            getterMethod = methodMap.get(key);
+          }
+          if (setterMethod != null && getterMethod != null) {
             try {
-              if (!tweetFields.contains(tweetField)) {
-                field = Tweet.class.getField(tweetField);
-                field.set(shownTweet, null);
-              } else {
-                field.set(shownTweet, field.get(foundTweet));
-              }
-            } catch (NoSuchFieldException | IllegalAccessException e) {
-              throw new IllegalArgumentException("Field \"" + tweetField + "\" is not part of the"
-                                                     + " Tweet class.");
+              setterMethod.invoke(shownTweet, getterMethod.invoke(foundTweet));
+              setterMethod = null;
+              getterMethod = null;
+            } catch (IllegalArgumentException iAe) {
+              throw new IllegalArgumentException(iAe);
+            }catch(IllegalAccessException iAe2) {
+              throw new IllegalArgumentException(iAe2);
+            } catch (InvocationTargetException iAe) {
+              throw new IllegalArgumentException(iAe);
             }
+          }
         }
-    );
+      }
+    }
     return shownTweet;
   }
   

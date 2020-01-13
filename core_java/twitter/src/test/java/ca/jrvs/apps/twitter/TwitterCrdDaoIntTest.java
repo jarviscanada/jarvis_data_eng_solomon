@@ -5,12 +5,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.net.URI;
-
 import static org.junit.Assert.assertEquals;
 
 public class TwitterCrdDaoIntTest {
-  String tempTweetId;
-  String sampleTweetId;
   String consumerKey;
   String consumerSecret;
   String accessToken;
@@ -21,11 +18,7 @@ public class TwitterCrdDaoIntTest {
   
   @Before
   public void setUp() throws Exception {
-    consumerKey = System.getenv("consumerKey");
-    consumerSecret = System.getenv("consumerSecret");
-    accessToken = System.getenv("accessToken");
-    tokenSecret = System.getenv("tokenSecret");
-    twitterHttpHelper = new TwitterHttpHelper(consumerKey, consumerSecret, accessToken, tokenSecret);
+    twitterHttpHelper = TwitterUtils.createAuthHelper();
     twitterCrdDao = new TwitterCrdDao(twitterHttpHelper);
     realTweet = twitterCrdDao.createObjectFromHttpResponse(twitterHttpHelper.httpGet(
         new URI("https://api.twitter.com/1.1/statuses/" +
@@ -45,13 +38,11 @@ public class TwitterCrdDaoIntTest {
 
   @Test(expected = RuntimeException.class)
   public void integrationTest() {
-    String expectedTweetBody = "httpPost test @ t";
+    String expectedTweetBody = "httpPost test @ t:";
     
     realTweet.setText(realTweet.getText().substring(0, expectedTweetBody.length())
                           + " " + System.currentTimeMillis());
     Tweet testTweet = twitterCrdDao.create(realTweet);
-    
-    tempTweetId = realTweet.getIdString();
 
     assertEquals(testTweet.getText().substring(0, expectedTweetBody.length()),  //Ignores
         // millisecond addition, which is used to make the tweets unique
@@ -60,5 +51,4 @@ public class TwitterCrdDaoIntTest {
     Tweet deletedTweet = twitterCrdDao.deleteById(realTweet.getIdString());
     realTweet = twitterCrdDao.findById(realTweet.getIdString());
   }
-  
 }

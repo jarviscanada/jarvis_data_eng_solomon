@@ -15,10 +15,11 @@ public class Coordinates {
   @JsonProperty("coordinates")
   private List<Float> lonLat;
   @JsonProperty("type")
-  private String type;
+  private String type = "Point";
   
   @JsonCreator
-  public Coordinates(){}
+  public Coordinates(){
+  }
 
   @JsonProperty("coordinates")
   public List<Float> getLonLat () {

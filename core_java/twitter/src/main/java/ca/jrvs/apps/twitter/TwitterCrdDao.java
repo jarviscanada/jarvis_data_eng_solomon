@@ -1,8 +1,6 @@
 package ca.jrvs.apps.twitter;
 
 import ca.jrvs.apps.twitter.model.Tweet;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.gdata.util.common.base.PercentEscaper;
 import org.apache.http.HttpException;
 import org.apache.http.HttpResponse;
@@ -38,8 +36,7 @@ public class TwitterCrdDao implements CrdDao<Tweet, String> {
     URI createPostUri;
     
     try {
-      createPostUri =
-          new URI((createUriString(POST_PATH, entity, null)
+      createPostUri = new URI((createUriString(POST_PATH, entity, null)
                        .append(percentEscaper.escape(entity.getText()))).toString());
     } catch (URISyntaxException e) {
       throw new IllegalArgumentException("Unable to construct URI from provided entity.");
@@ -62,8 +59,7 @@ public class TwitterCrdDao implements CrdDao<Tweet, String> {
     URI findByIdRequest;
     
     try {
-      findByIdRequest =
-          new URI(createUriString(SHOW_PATH, null, idString).toString());
+      findByIdRequest = new URI(createUriString(SHOW_PATH, null, idString).toString());
     } catch (Exception e) {
       throw new RuntimeException("Unable to create valid URI from provided idString." + idString);
     }
@@ -73,7 +69,6 @@ public class TwitterCrdDao implements CrdDao<Tweet, String> {
     try {
       tweetToBeFound = createObjectFromHttpResponse(httpResponse, Tweet.class);
     } catch (Exception e) {
-      e.printStackTrace();
       throw new RuntimeException("Unable to create Tweet object from HttpResponse");
     }
     return tweetToBeFound;
@@ -131,13 +126,7 @@ public class TwitterCrdDao implements CrdDao<Tweet, String> {
                                   + httpResponse.getStatusLine().getStatusCode());
     }
     String entityAsJsonString = EntityUtils.toString(httpResponse.getEntity());
-    if (entityAsJsonString.startsWith("[")) { //If returning a single tweet as part of a
-      // timeline, remove from array
-      entityAsJsonString = entityAsJsonString.substring(1, entityAsJsonString.length() - 1);
-    }
-    ObjectMapper objectMapper = new ObjectMapper();
-    objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
-    return ((T) objectMapper.readValue(entityAsJsonString, objectClass));
+    return TwitterUtils.fromJsonToObject(entityAsJsonString, objectClass);
   }
   
 }

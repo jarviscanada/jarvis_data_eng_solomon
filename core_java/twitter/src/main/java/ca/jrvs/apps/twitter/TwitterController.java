@@ -23,7 +23,7 @@ public class TwitterController implements Controller {
    */
   @Override
   public Tweet postTweet(String[] args) {
-    if(args.length != 3){}
+
     return null;
   }
   
