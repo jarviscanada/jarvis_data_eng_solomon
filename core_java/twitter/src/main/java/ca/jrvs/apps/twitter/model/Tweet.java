@@ -4,8 +4,6 @@ import ca.jrvs.apps.twitter.dto.Coordinates;
 import ca.jrvs.apps.twitter.dto.Entities;
 import com.fasterxml.jackson.annotation.*;
 
-import java.util.Date;
-
 @JsonPropertyOrder({
     "created_at",
     "id",
@@ -23,7 +21,7 @@ import java.util.Date;
 public class Tweet {
   @JsonProperty("created_at")
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "EEE MMM dd HH:mm:ss Z yyyy")
-  private Date createdAt = null;
+  private String createdAt = null;
   @JsonProperty("id")
   private long id = 0;
   @JsonProperty("id_str")
@@ -44,7 +42,7 @@ public class Tweet {
   private boolean retweeted = false;
 
   @JsonCreator
-  public Tweet(@JsonProperty("created_at") Date createdAt,
+  public Tweet(@JsonProperty("created_at") String createdAt,
                 @JsonProperty("id") long id,
                 @JsonProperty("id_str") String idString,
                 @JsonProperty("text") String text,
@@ -70,13 +68,14 @@ public class Tweet {
   }
   
   @JsonGetter("created_at")
-  public Date getCreatedAt() {
+  public String getCreatedAt() {
       return createdAt;
     }
   @JsonSetter("created_at")
-  public void setCreatedAt(Date createdAt) {
+  public void setCreatedAt(String createdAt) {
     this.createdAt = createdAt;
   }
+  @JsonSetter("created_at")
   @JsonGetter("id")
   public long getId() {
     return id;

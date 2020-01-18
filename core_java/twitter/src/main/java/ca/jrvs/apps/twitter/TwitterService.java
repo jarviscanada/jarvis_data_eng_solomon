@@ -28,7 +28,7 @@ public class TwitterService implements Service {
   @Override
   public Tweet postTweet(Tweet tweet) {
     validateTweetParameters(tweet.getIdString(), tweet);
-    return twitterCrdDao.create(tweet);
+    return (Tweet) twitterCrdDao.create(tweet);
   }
   
   /**
@@ -115,7 +115,7 @@ public class TwitterService implements Service {
                                              + "numbers, and at maximum "
                                              + "64-bits long.");
     }
-    if (tweet != null) {
+    if (tweet != null && tweet.getCoordinates() != null) {
       if (abs(tweet.getCoordinates().getLonLat().get(0)) > 90) {
         throw new IllegalArgumentException("INVALID TWEET: Longitude values must be within the "
                                                + "inclusive range [-90, 90] to be valid.");
