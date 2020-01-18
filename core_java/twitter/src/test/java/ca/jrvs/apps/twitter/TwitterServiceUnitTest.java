@@ -40,7 +40,7 @@ public class TwitterServiceUnitTest {
     lonLat.add(1, -45f);
     coordinates.setLonLat(lonLat);
     tweet = new Tweet(
-        new Date(),
+        new Date().toString(),
         90071992540740993L,
         "90071992540740993",
         "this is the text body of a tweet",

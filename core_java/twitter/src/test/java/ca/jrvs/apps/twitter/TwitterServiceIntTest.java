@@ -3,6 +3,7 @@ package ca.jrvs.apps.twitter;
 import ca.jrvs.apps.twitter.dto.Coordinates;
 import ca.jrvs.apps.twitter.dto.Entities;
 import ca.jrvs.apps.twitter.model.Tweet;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.HttpMethod;
@@ -39,10 +40,10 @@ public class TwitterServiceIntTest {
     lonLat.add(-45f);
     coordinates.setLonLat(lonLat);
     outboundTweet = new Tweet(
-        new Date(),
+        new Date().toString(),
         90071992540740993L,
         "90071992540740993",
-        "Twitter Service test",
+        "Twitter Service test " + System.currentTimeMillis(),
         new Entities(null, null, null, null),
         coordinates,
         0,
@@ -53,23 +54,25 @@ public class TwitterServiceIntTest {
   }
   
   @Test(expected = RuntimeException.class)
-  public void integrationTest () {
-    Tweet postedTweet = twitterService.postTweet(realTweet);
+  public void integrationTest () throws JsonProcessingException {
+    Tweet postedTweet = twitterService.postTweet(outboundTweet);
     
     assertNotNull(twitterService.showTweet(postedTweet.getIdString(), new String[]{"text", "idString",
-        "createdAt"}).toString());
+        "createdAt"}));
     
     Tweet newOutboundTweet = new Tweet();
-    newOutboundTweet.setText("Twitter Service test 2");
-        Tweet newPostedTweet =  twitterService.postTweet(outboundTweet);
+    newOutboundTweet.setId(realTweet.getId());
+    newOutboundTweet.setIdString(newOutboundTweet.getId() + "");
+    newOutboundTweet.setText("Twitter Service test 2 " + System.currentTimeMillis());
+    Tweet newPostedTweet =  twitterService.postTweet(newOutboundTweet);
     
-   assertTrue(twitterService.deleteTweets(new String[]{postedTweet.getIdString(),
+   assertFalse(twitterService.deleteTweets(new String[]{postedTweet.getIdString(),
         newPostedTweet.getIdString()}).isEmpty());
   
-    String shownDeletedTweetString = twitterService.showTweet(newPostedTweet.getIdString(),
+    assertNotNull(TwitterUtils.toJsonFromObject(twitterService.showTweet(newPostedTweet.getIdString(),
         new String[]{
         "text", "idString",
-        "createdAt"}).toString();
+        "createdAt"})));
   
     fail();
   }

@@ -37,7 +37,15 @@ public class TwitterHttpHelper implements HttpHelper {
   public HttpResponse httpGet(URI uri) {
     return executeSignedHttpRequest(HttpMethod.GET, uri);
   }
+
   
+  /**
+   * Determines HTTP request type, signs and sends the request
+   * then returns the resulting response.
+   * @param requestType
+   * @param uri
+   * @return HTTP response received from server
+   */
   public HttpResponse executeSignedHttpRequest(HttpMethod requestType, URI uri) {
     HttpUriRequest httpRequest;
     HttpResponse finalResponse = null;

@@ -28,7 +28,15 @@ public class TwitterCrdDao implements CrdDao<Tweet, String> {
   public TwitterCrdDao(HttpHelper httpHelper) {
     this.httpHelper = httpHelper;
   }
-  
+
+
+  /***
+   * Takes the provided Tweet, parses it and sends a HTTP post request.
+   * The resulting response is parsed as JSON and use to construct the newly
+   * posted Tweet.
+   * @param entity entity that to be created
+   * @return Tweet formed from server response
+   */
   @Override
   public Tweet create(Tweet entity) {
     PercentEscaper percentEscaper = new PercentEscaper("", false);
@@ -52,7 +60,14 @@ public class TwitterCrdDao implements CrdDao<Tweet, String> {
     
     return formedTweet;
   }
-  
+
+
+  /**
+   * Takes given idString to form a HTTP get request,
+   * returning the found Tweet.
+   * @param idString
+   * @return Retrieved Tweet
+   */
   @Override
   public Tweet findById(String idString) {
     Tweet tweetToBeFound;
@@ -73,7 +88,14 @@ public class TwitterCrdDao implements CrdDao<Tweet, String> {
     }
     return tweetToBeFound;
   }
-  
+
+
+  /**
+   * Takes given idString to form a HTTP post request,
+   * returns the deleted Tweet object.
+   * @param idString
+   * @return Returns deleted Tweet
+   */
   @Override
   public Tweet deleteById(String idString) {
     Tweet tweetToBeDeleted;
@@ -115,7 +137,17 @@ public class TwitterCrdDao implements CrdDao<Tweet, String> {
     
     return stringBuilder;
   }
-
+  
+  
+  /**
+   * Using an HTTP response and the desired object type,
+   * map the resulting HTTPEntity to the provided class and return it
+   * @param httpResponse
+   * @param objectClass
+   * @param <T>
+   * @return Object with type objectClass constructed from HTTP response
+   * @throws Exception
+   */
   public <T>  T createObjectFromHttpResponse(HttpResponse httpResponse,
                                               Class<T> objectClass) throws Exception {
     if (httpResponse == null) {

@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.net.URI;
+
 import static org.junit.Assert.assertEquals;
 
 public class TwitterCrdDaoIntTest {
@@ -48,7 +49,7 @@ public class TwitterCrdDaoIntTest {
         // millisecond addition, which is used to make the tweets unique
         expectedTweetBody);
     
-    Tweet deletedTweet = twitterCrdDao.deleteById(realTweet.getIdString());
-    realTweet = twitterCrdDao.findById(realTweet.getIdString());
+    Tweet deletedTweet = twitterCrdDao.deleteById(testTweet.getIdString());
+    testTweet = twitterCrdDao.findById(testTweet.getIdString());
   }
 }
