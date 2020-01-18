@@ -1,16 +1,12 @@
 .idea/
-<<<<<<< HEAD
 jdbc/SQL-Scripts
 twitter/twitter.iml
 twitter/target
 jdbc/target
 grep/target
 jdbc/.idea/
-=======
-grep/target
-twitter/target
 jdbc/target
-jdbc/SQL-Scripts/
 twitter/.idea/
-twitter/twitter.iml
->>>>>>> feature/twitterCLI
+jdbc/jdbc.iml
+grep/grep.iml
+twitter/src/main/java/ca/jrvs/apps/example
