@@ -4,13 +4,14 @@ import ca.jrvs.apps.twitter.model.Tweet;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import javax.inject.Inject;
 import java.util.Arrays;
 import java.util.List;
 
 public class TwitterCliApp {
   @Inject
-  private static TwitterController twitterController;
+  private static Controller controller;
   private static Logger logger = LoggerFactory.getLogger(TwitterCliApp.class);
   
   /**
@@ -19,14 +20,14 @@ public class TwitterCliApp {
    * @param args
   **/
   public static void run(String[] args) throws Exception {
-    switch (args[1]) {
+    switch (args[0]) {
       case "post":
         logger.info("Created Tweet:");
-        System.out.println(TwitterUtils.toJsonFromObject(twitterController.postTweet(args)));
+        System.out.println(TwitterUtils.toJsonFromObject(controller.postTweet(args)));
         break;
       case "show":
         logger.info("Retrieved tweet:");
-        String tweetToShowJson = TwitterUtils.toJsonFromObject(twitterController.showTweet(args));
+        String tweetToShowJson = TwitterUtils.toJsonFromObject(controller.showTweet(args));
         List<String> toShow = Arrays.asList(tweetToShowJson.split("\n"));
         StringBuilder tweetJson = new StringBuilder();
         for (String line : toShow) {
@@ -39,7 +40,7 @@ public class TwitterCliApp {
         break;
       case "delete":
         logger.info("Tweet(s) deleted:");
-        List<Tweet>  deletedTweets = twitterController.deleteTweet(args);
+        List<Tweet>  deletedTweets = controller.deleteTweet(args);
         deletedTweets.forEach((Tweet tweet) -> {
           try {
             System.out.println(TwitterUtils.toJsonFromObject(tweet) + ",\n");
@@ -48,7 +49,7 @@ public class TwitterCliApp {
           }
         });
         break;
-      default: throw new IllegalArgumentException("[Usage] TwitterCliApp post|show|delete "
+      default: throw new IllegalArgumentException("[Usage] post|show|delete "
                                                       + "\"text\" longitude:latitude|postId");
     }
   }
@@ -59,15 +60,14 @@ public class TwitterCliApp {
    * @param args
    */
   public static void main(String[] args) throws Exception {
-    if (args.length < 3 || args[1].matches("[^a-z]+")) {
-      throw new IllegalArgumentException("[Usage] TwitterCliApp post \"text\" "
-                                            + "\"longitude:latitude\"\n"
-                                            + "        TwitterCliApp show|delete \"postId(s)\"");
+    if (args.length < 3 || args[0].matches("[^a-z]+")) {
+      throw new IllegalArgumentException("[Usage] post \"text\" \"longitude:latitude\"\n"
+                                       + "        show|delete \"postId(s)\"");
     }
-    TwitterHttpHelper twitterHttpHelper = TwitterUtils.createAuthHelper();
-    TwitterCrdDao twitterCrdDao = new TwitterCrdDao(twitterHttpHelper);
-    TwitterService twitterService = new TwitterService(twitterCrdDao);
-    twitterController = new TwitterController(twitterService);
+    HttpHelper twitterHttpHelper = TwitterUtils.createAuthHelper();
+    CrdDao twitterCrdDao = new TwitterCrdDao(twitterHttpHelper);
+    Service twitterService = new TwitterService((TwitterCrdDao) twitterCrdDao);
+    controller = new TwitterController((TwitterService) twitterService);
     
     run(args);
   }

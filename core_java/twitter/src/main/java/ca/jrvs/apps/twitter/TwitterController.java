@@ -2,6 +2,7 @@ package ca.jrvs.apps.twitter;
 
 import ca.jrvs.apps.twitter.dto.Coordinates;
 import ca.jrvs.apps.twitter.model.Tweet;
+
 import javax.inject.Inject;
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -12,15 +13,14 @@ import java.util.stream.Collectors;
 
 public class TwitterController implements Controller {
   @Inject
-  TwitterService twitterService;
+  Service service;
   
-  public TwitterController(TwitterService twitterService) {
-    this.twitterService = twitterService;
+  public TwitterController(TwitterService service) {
+    this.service = service;
   }
   
   /**
    * Parse user argument and post a tweet by calling service classes
-   *
    * @param args
    * @return a posted tweet
    * @throws IllegalArgumentException if args are invalid
@@ -28,14 +28,14 @@ public class TwitterController implements Controller {
   @Override
   public Tweet postTweet(String[] args) {
     Tweet tweetToPost = new Tweet();
-    tweetToPost.setText(args[2]);
+    tweetToPost.setText(args[1]);
     
     Coordinates coords = new Coordinates();
-    String[] providedLatLon = args[3].split(":");
+    String[] providedLatLon = args[2].split(":");
     coords.setLonLat(Arrays.stream(providedLatLon).map(Float::parseFloat).collect(Collectors.toList()));
     tweetToPost.setCoordinates(coords);
     
-    return twitterService.postTweet(tweetToPost);
+    return service.postTweet(tweetToPost);
   }
   
   /**
@@ -47,7 +47,7 @@ public class TwitterController implements Controller {
    */
   @Override
   public Tweet showTweet(String[] args) {
-    List<String> fields = Arrays.asList(args[3].replace(" ","").split(","));
+    List<String> fields = Arrays.asList(args[2].replace(" ","").split(","));
   
     Map<String, Boolean> matchedFields = new HashMap<>();
     
@@ -77,7 +77,7 @@ public class TwitterController implements Controller {
       throw new IllegalArgumentException(stringBuilder.toString());
     }
 
-    return twitterService.showTweet(args[2], fields.toArray(new String[]{}));
+    return service.showTweet(args[1], fields.toArray(new String[]{}));
   }
   
   /**
@@ -89,7 +89,7 @@ public class TwitterController implements Controller {
    */
   @Override
   public List<Tweet> deleteTweet(String[] args) {
-    return twitterService.deleteTweets(Arrays.copyOfRange(args, 2, args.length));
+    return service.deleteTweets(Arrays.copyOfRange(args, 1, args.length));
   }
 
 }

@@ -12,10 +12,10 @@ import static java.lang.StrictMath.pow;
 
 public class TwitterService implements Service {
   @Inject
-  TwitterCrdDao twitterCrdDao;
+  CrdDao crdDao;
   
-  public TwitterService(TwitterCrdDao twitterCrdDao) {
-    this.twitterCrdDao = twitterCrdDao;
+  public TwitterService(TwitterCrdDao crdDao) {
+    this.crdDao = crdDao;
   }
   
   /**
@@ -28,7 +28,7 @@ public class TwitterService implements Service {
   @Override
   public Tweet postTweet(Tweet tweet) {
     validateTweetParameters(tweet.getIdString(), tweet);
-    return (Tweet) twitterCrdDao.create(tweet);
+    return (Tweet) crdDao.create(tweet);
   }
   
   /**
@@ -42,7 +42,7 @@ public class TwitterService implements Service {
   @Override
   public Tweet showTweet(String id, String[] fields) {
     validateTweetParameters(id, null);
-    Tweet foundTweet = twitterCrdDao.findById(id);
+    Tweet foundTweet = (Tweet) crdDao.findById(id);
   
     Tweet shownTweet = new Tweet();
     Map<String, Method> methodMap = new HashMap<>();
@@ -100,7 +100,7 @@ public class TwitterService implements Service {
     Arrays.stream(ids).forEach(
         (String string) -> {
           validateTweetParameters(string, null);
-          deletedTweets.add(twitterCrdDao.deleteById(string));
+          deletedTweets.add((Tweet) crdDao.deleteById(string));
         }
     );
     return deletedTweets;

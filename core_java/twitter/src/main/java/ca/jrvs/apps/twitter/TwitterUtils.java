@@ -41,7 +41,6 @@ public class TwitterUtils {
   public static <T> T fromJsonToObject(String jsonString, Class clazz) throws IOException {
     ObjectMapper objectMapper = new ObjectMapper();
     objectMapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
-//    objectMapper.enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
     if (jsonString.startsWith("[")) jsonString = jsonString.substring(1, jsonString.length() - 1);
   
     return (T) objectMapper.readValue(jsonString, clazz);

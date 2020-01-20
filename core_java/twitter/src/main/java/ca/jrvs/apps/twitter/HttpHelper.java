@@ -1,7 +1,8 @@
 package ca.jrvs.apps.twitter;
 
-import java.net.URI;
 import org.apache.http.HttpResponse;
+
+import java.net.URI;
 
 public interface HttpHelper {
 
