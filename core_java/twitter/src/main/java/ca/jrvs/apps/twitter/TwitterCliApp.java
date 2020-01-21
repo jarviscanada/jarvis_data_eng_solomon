@@ -1,18 +1,27 @@
 package ca.jrvs.apps.twitter;
 
 import ca.jrvs.apps.twitter.model.Tweet;
+import ca.jrvs.apps.twitter.spring.TwitterCliBean;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
 import java.util.Arrays;
 import java.util.List;
 
+@Component
 public class TwitterCliApp {
   @Inject
   private static Controller controller;
   private static Logger logger = LoggerFactory.getLogger(TwitterCliApp.class);
+  
+  @Autowired
+  public TwitterCliApp(Controller controller) {
+    this.controller = controller;
+  }
   
   /**
    * Parses incoming arguments for tweet operation.
@@ -64,10 +73,10 @@ public class TwitterCliApp {
       throw new IllegalArgumentException("[Usage] post \"text\" \"longitude:latitude\"\n"
                                        + "        show|delete \"postId(s)\"");
     }
-    HttpHelper twitterHttpHelper = TwitterUtils.createAuthHelper();
+    HttpHelper twitterHttpHelper = TwitterCliBean.createAuthHelper();
     CrdDao twitterCrdDao = new TwitterCrdDao(twitterHttpHelper);
-    Service twitterService = new TwitterService((TwitterCrdDao) twitterCrdDao);
-    controller = new TwitterController((TwitterService) twitterService);
+    Service twitterService = new TwitterService(twitterCrdDao);
+    controller = new TwitterController(twitterService);
     
     run(args);
   }

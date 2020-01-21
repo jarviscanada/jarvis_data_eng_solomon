@@ -10,12 +10,14 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.springframework.http.HttpMethod;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.net.URI;
 
+@Component
 public class TwitterHttpHelper implements HttpHelper {
 
   private OAuthConsumer consumer;
@@ -25,7 +27,13 @@ public class TwitterHttpHelper implements HttpHelper {
                             String tokenSecret) {
     consumer = new CommonsHttpOAuthConsumer(consumerKey, consumerSecret);
     consumer.setTokenWithSecret(accessToken, tokenSecret);
-    httpClient = HttpClientBuilder.create().build();
+    httpClient = new DefaultHttpClient();
+  }
+  
+  public TwitterHttpHelper() {
+    this(System.getenv("consumerKey"), System.getenv("consumerSecret"), System.getenv(
+        "accessToken"),
+        System.getenv("tokenSecret"));
   }
   
   @Override

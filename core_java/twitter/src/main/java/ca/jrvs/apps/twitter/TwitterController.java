@@ -2,6 +2,7 @@ package ca.jrvs.apps.twitter;
 
 import ca.jrvs.apps.twitter.dto.Coordinates;
 import ca.jrvs.apps.twitter.model.Tweet;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.inject.Inject;
 import java.lang.reflect.Field;
@@ -11,11 +12,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@org.springframework.stereotype.Controller
 public class TwitterController implements Controller {
   @Inject
-  Service service;
+  private Service service;
   
-  public TwitterController(TwitterService service) {
+  @Autowired
+  public TwitterController(Service service) {
     this.service = service;
   }
   

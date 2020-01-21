@@ -1,6 +1,7 @@
 package ca.jrvs.apps.twitter;
 
 import ca.jrvs.apps.twitter.model.Tweet;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.inject.Inject;
 import java.lang.reflect.InvocationTargetException;
@@ -10,13 +11,15 @@ import java.util.*;
 import static java.lang.StrictMath.abs;
 import static java.lang.StrictMath.pow;
 
+@org.springframework.stereotype.Service
 public class TwitterService implements Service {
   @Inject
-  CrdDao crdDao;
-  
-  public TwitterService(TwitterCrdDao crdDao) {
-    this.crdDao = crdDao;
-  }
+  private CrdDao crdDao;
+
+  @Autowired
+  public TwitterService(CrdDao crdDao) {
+      this.crdDao = crdDao;
+    }
   
   /**
    * Validate and post a user input Tweet
@@ -107,13 +110,15 @@ public class TwitterService implements Service {
   }
   
   public void validateTweetParameters(String id, Tweet tweet) {
-    if (Long.parseLong(id) < ((long) pow(2.0, 53))
-            || Long.parseLong(id) > (long) pow(2.0, 64)
-            || id.length() < 1
-            || id == null) {
-      throw new IllegalArgumentException("INVALID TWEET: Tweet IDs are at minimum 53-bit "
-                                             + "numbers, and at maximum "
-                                             + "64-bits long.");
+    if (id != null && tweet != null) {
+      if (Long.parseLong(id) < ((long) pow(2.0, 53))
+                || Long.parseLong(id) > (long) pow(2.0, 64)
+                || id.length() < 1
+                || id == null) {
+          throw new IllegalArgumentException("INVALID TWEET: Tweet IDs are at minimum 53-bit "
+                                                 + "numbers, and at maximum "
+                                                 + "64-bits long.");
+      }
     }
     if (tweet != null && tweet.getCoordinates() != null) {
       if (abs(tweet.getCoordinates().getLonLat().get(0)) > 90) {

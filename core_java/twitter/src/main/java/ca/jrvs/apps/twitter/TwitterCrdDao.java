@@ -5,11 +5,14 @@ import com.google.gdata.util.common.base.PercentEscaper;
 import org.apache.http.HttpException;
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import javax.inject.Inject;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+@Repository
 public class TwitterCrdDao implements CrdDao<Tweet, String> {
   private static final String API_BASE_URI = "https://api.twitter.com";
   private static final String POST_PATH = "/1.1/statuses/update.json";
@@ -25,10 +28,10 @@ public class TwitterCrdDao implements CrdDao<Tweet, String> {
   @Inject
   private HttpHelper httpHelper;
   
+  @Autowired
   public TwitterCrdDao(HttpHelper httpHelper) {
     this.httpHelper = httpHelper;
   }
-
 
   /***
    * Takes the provided Tweet, parses it and sends a HTTP post request.
