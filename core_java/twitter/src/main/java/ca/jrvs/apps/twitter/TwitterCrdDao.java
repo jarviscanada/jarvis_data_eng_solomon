@@ -57,7 +57,7 @@ public class TwitterCrdDao implements CrdDao<Tweet, String> {
   
     try {
       formedTweet = createObjectFromHttpResponse(httpResponse, Tweet.class);
-    } catch (Exception e) {
+    } catch (IllegalArgumentException e) {
       throw new RuntimeException("Unable to create Tweet object from HttpResponse");
     }
     
@@ -78,7 +78,7 @@ public class TwitterCrdDao implements CrdDao<Tweet, String> {
     
     try {
       findByIdRequest = new URI(createUriString(SHOW_PATH, null, idString).toString());
-    } catch (Exception e) {
+    } catch (IllegalArgumentException e) {
       throw new RuntimeException("Unable to create valid URI from provided idString." + idString);
     }
     
@@ -86,7 +86,7 @@ public class TwitterCrdDao implements CrdDao<Tweet, String> {
   
     try {
       tweetToBeFound = createObjectFromHttpResponse(httpResponse, Tweet.class);
-    } catch (Exception e) {
+    } catch (IllegalArgumentException e) {
       throw new RuntimeException("Unable to create Tweet object from HttpResponse");
     }
     return tweetToBeFound;
