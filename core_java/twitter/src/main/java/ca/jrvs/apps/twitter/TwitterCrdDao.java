@@ -114,7 +114,7 @@ public class TwitterCrdDao implements CrdDao<Tweet, String> {
   
     try {
       tweetToBeDeleted = createObjectFromHttpResponse(httpResponse, Tweet.class);
-    } catch (Exception e) {
+    } catch (IllegalArgumentException e) {
       throw new RuntimeException("Unable to create Tweet object from HttpResponse");
     }
     
