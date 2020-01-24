@@ -10,12 +10,12 @@ import java.util.Collection;
  *
  * @see java.util.List for JDK full version of List
  */
-interface JList<E> {
+public interface JList<E> {
 
 /**
  * Appends the specified element to the end of this list (optional
  * operation).
- *
+ *AA
  * @param e element to be appended to this list
  * @return <tt>true</tt> (as specified by {@link Collection#add})
  * @throws NullPointerException if the specified element is null and this
