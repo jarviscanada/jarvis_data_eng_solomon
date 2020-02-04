@@ -1,4 +1,4 @@
-package ca.jrvs.apps.trading.model;
+package ca.jrvs.apps.trading.model.domain;
 
 import java.util.HashMap;
 import java.util.Map;

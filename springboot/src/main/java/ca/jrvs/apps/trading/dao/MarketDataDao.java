@@ -1,7 +1,8 @@
 package ca.jrvs.apps.trading.dao;
 
-import ca.jrvs.apps.trading.model.IexQuote;
+import ca.jrvs.apps.trading.model.domain.IexQuote;
 import ca.jrvs.apps.trading.model.config.MarketDataConfig;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.conn.HttpClientConnectionManager;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -12,6 +13,7 @@ import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -34,7 +36,7 @@ public class MarketDataDao implements CrudRepository<IexQuote, String> {
   @Override
   public Optional<IexQuote> findById (String ticker) {
     Optional<IexQuote> iexQuote;
-    List<IexQuote> quotes = findAllById(Collections.singleton(ticker));
+    List<IexQuote> quotes = findAllById(Collections.singletonList(ticker));
     
     if(quotes.size() == 0) {
       return Optional.empty();
@@ -47,24 +49,25 @@ public class MarketDataDao implements CrudRepository<IexQuote, String> {
   }
   
   @Override
-  public Iterable<IexQuote> findAllById (Iterable<String> iterable) {
-    return null;
-  }
+    public List<IexQuote> findAllById (Iterable<String> iterable) {
+      List<IexQuote> quotes = new ArrayList<>();
+      iterable.iterator().forEachRemaining(quotes.add());
+      return null;
+    }
   
   private CloseableHttpClient getHttpClient () {
-    return HttpClients.custom().setConnectionManagerShared(true).build();
+    return HttpClients.custom()
+               .setConnectionManager(httpClientConnectionManager)
+               .setConnectionManagerShared(true)
+               .build();
   }
-
-  @Override
-  public <S extends IexQuote> S save (S s) {
-    throw new UnsupportedOperationException("Not implemented");
+    
+  private Optional<String> executeHttpGet (String url) {
+    Optional<String> httpEntityString;
+    getHttpClient().execute(new HttpGet(url));
+    return httpEntityString;
   }
-  
-  @Override
-  public <S extends IexQuote> Iterable<S> saveAll (Iterable<S> iterable) {
-    throw new UnsupportedOperationException("Not implemented");
-  }
-
+    
   @Override
   public boolean existsById (String s) {
     throw new UnsupportedOperationException("Not implemented");
@@ -97,6 +100,16 @@ public class MarketDataDao implements CrudRepository<IexQuote, String> {
   
   @Override
   public void deleteAll () {
+    throw new UnsupportedOperationException("Not implemented");
+  }
+  
+  @Override
+  public <S extends IexQuote> S save (S s) {
+    throw new UnsupportedOperationException("Not implemented");
+  }
+  
+  @Override
+  public <S extends IexQuote> Iterable<S> saveAll (Iterable<S> iterable) {
     throw new UnsupportedOperationException("Not implemented");
   }
 }
