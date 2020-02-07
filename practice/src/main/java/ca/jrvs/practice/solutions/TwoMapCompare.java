@@ -9,12 +9,7 @@ public class TwoMapCompare<K, V> {
       return false;
     }
     
-    return m1.values() == m2.values() && m1.keySet() == m2.keySet();
-//    return m1.keySet().stream().allMatch((K key) -> m1.get(key) == m2.get(key));
-    
-//    for(K key : m1.keySet()) {
-//      if (m1.get(key) != m2.get(key)) return false;
-//    }
+    return m1.entrySet().stream().filter(entry -> m2.entrySet().contains(entry)).count() == m1.size();
   }
 
   public static void main (String[] args) {
@@ -27,6 +22,10 @@ public class TwoMapCompare<K, V> {
       m2.put(number, number + "");
     }
     
+    System.out.println(compareTwoMaps(m1, m2));
+    
+    m2.put(((int)(100f * Math.random())), ((int)(100f * Math.random())) + "");
+  
     System.out.println(compareTwoMaps(m1, m2));
     
   }

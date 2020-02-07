@@ -5,7 +5,7 @@ import com.sun.org.apache.xml.internal.utils.res.XResources_zh_CN;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class ArrayJList<E> implements JList<E> {
+public class ArrayJList<E> implements ca.jrvs.practice.dataStructure.list.JList<E> {
   
   /**
    * Default initial capacity.
