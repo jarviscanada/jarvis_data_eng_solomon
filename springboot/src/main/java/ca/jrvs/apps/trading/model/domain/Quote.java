@@ -1,13 +1,15 @@
 package ca.jrvs.apps.trading.model.domain;
 
+import java.math.BigInteger;
+
 public class Quote implements Entity<String> {
 
   private String ticker;
   private Double lastPrice;
   private Double bidPrice;
-  private Integer bidSize;
+  private BigInteger bidSize;
   private Double askPrices;
-  private Integer askSize;
+  private BigInteger askSize;
   
   @Override
   public String getId () {
@@ -35,11 +37,11 @@ public class Quote implements Entity<String> {
     this.bidPrice = bidPrice;
   }
   
-  public Integer getBidSize () {
+  public BigInteger getBidSize () {
     return bidSize;
   }
   
-  public void setBidSize (Integer bidSize) {
+  public void setBidSize (BigInteger bidSize) {
     this.bidSize = bidSize;
   }
   
@@ -51,11 +53,11 @@ public class Quote implements Entity<String> {
     this.askPrices = askPrices;
   }
   
-  public Integer getAskSize () {
+  public BigInteger getAskSize () {
     return askSize;
   }
   
-  public void setAskSize (Integer askSize) {
+  public void setAskSize (BigInteger askSize) {
     this.askSize = askSize;
   }
 }

@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 
 @Transactional
 @Service
@@ -23,17 +25,32 @@ public class QuoteService {
     this.marketDataDao = marketDataDao;
     this.quoteDao = quoteDao;
   }
-  
+
+  /**
+   * @param Ticker symbol for IEX Quote
+   * @return IexQuote object with the specified ticker
+   */
   public IexQuote findIexQuoteByTicker (String ticker) {
-    return marketDataDao.findById(ticker).orElseThrow(()-> new IllegalArgumentException(ticker +
-                                                                                            " is " +
-                                                                                            "invalid"));
+    return marketDataDao.findById(ticker).orElseThrow(
+        ()-> new IllegalArgumentException(ticker + " is invalid"));
   }
-  
+
+  /**
+   * Pulls most recent quote data from IEX Cloud and updates stored
+   * Quotes with the new information
+   */
   public void updateMarketData() {
-  
+    quoteDao.findAll().forEach((quote) -> {
+        buildQuoteFromIexQuote(marketDataDao.findById(quote.getId()).orElseThrow(
+            () -> new IllegalArgumentException(quote.getId() + " cannot be found")
+        ));
+    });
   }
-  
+
+  /**
+   * @param IexQuote object
+   * @return Quote object built with information from the IexQuote
+   */
   protected static Quote buildQuoteFromIexQuote (IexQuote iexQuote) {
     Quote builtQuote = new Quote();
     
@@ -45,8 +62,28 @@ public class QuoteService {
     
     return builtQuote;
   }
-  
-  public void saveQuote () {}
 
-  public void saveQuotes () {}
+  /**
+   * @param IexQuote object that should be saved
+   */
+  public void saveQuote (IexQuote iexQuote) {
+    Quote quote = buildQuoteFromIexQuote(iexQuote);
+    quoteDao.save(quote);
+  }
+
+  /**
+   ** @param A list of IexQuote objects that should be saved
+   */
+  public void saveQuotes (List<IexQuote> iexQuotes) {
+    List<Quote> quotes = new ArrayList<>();
+    iexQuotes.forEach(iexQuote -> quotes.add(buildQuoteFromIexQuote(iexQuote)));
+    quoteDao.saveAll(quotes);
+  }
+
+  /**
+   * @return A list of Quote objects returned by querying a database
+   */
+  public List<Quote> findAllQuotes() {
+    return (List<Quote>) quoteDao.findAll();
+  }
 }

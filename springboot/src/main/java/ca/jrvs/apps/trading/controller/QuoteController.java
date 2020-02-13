@@ -1,11 +1,14 @@
 package ca.jrvs.apps.trading.controller;
 
 import ca.jrvs.apps.trading.model.domain.IexQuote;
+import ca.jrvs.apps.trading.model.domain.Quote;
 import ca.jrvs.apps.trading.service.QuoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/quote")
@@ -38,5 +41,35 @@ public class QuoteController {
       throw ResponseExceptionUtil.getResponseStatusException(e);
     }
   }
+
+  @PutMapping(path="/")
+  @ResponseStatus(HttpStatus.OK)
+  public void saveQuote(Quote quote) {
+    try {
+      quoteService.updateMarketData();
+    } catch (Exception e) {
+      throw ResponseExceptionUtil.getResponseStatusException(e);
+    }
+  }
+  
+  @PutMapping(path="/")
+  @ResponseStatus(HttpStatus.OK)
+  public void saveQuotes(List<Quote> quotes) {
+    try {
+      quoteService.updateMarketData();
+    } catch (Exception e) {
+      throw ResponseExceptionUtil.getResponseStatusException(e);
+    }
+  }
+  
+  @PutMapping(path="/")
+  @ResponseStatus(HttpStatus.OK)
+  public void findAllQuotes() {
+    try {
+      quoteService.updateMarketData();
+    } catch (Exception e) {
+      throw ResponseExceptionUtil.getResponseStatusException(e);
+    }
+}
 
 }

@@ -1,22 +1,20 @@
 package ca.jrvs.apps.trading.dao;
 
 import ca.jrvs.apps.trading.model.domain.Quote;
-import com.sun.org.apache.xpath.internal.operations.Quo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.jdbc.IncorrectResultSetColumnCountException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
-
 import javax.sql.DataSource;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -32,7 +30,7 @@ public class QuoteDao implements CrudRepository<Quote, String> {
   @Autowired
   public QuoteDao (DataSource dataSource) {
     jdbcTemplate = new JdbcTemplate(dataSource);
-    simpleJdbcInsert = new SimpleJdbcInsert(dataSource);
+    simpleJdbcInsert = new SimpleJdbcInsert(dataSource).withTableName(TABLE_NAME);
   }
   
   @Override
@@ -57,8 +55,8 @@ public class QuoteDao implements CrudRepository<Quote, String> {
   }
   
   private int updateOne(Quote quote) {
-    String update_sql = "UPDATE quote SET last_price=?, bid_price=?, bid_size=?, ask_price=?, " +
-                            "ask_size=? WHERE ticker=?";
+    String update_sql = "UPDATE quote SET last_price=?, bid_price=?, bid_size=?, ask_price=?, "
+                            + "ask_size=? WHERE ticker=?";
     return jdbcTemplate.update(update_sql, makeUpdateValues(quote));
   }
   
@@ -69,37 +67,51 @@ public class QuoteDao implements CrudRepository<Quote, String> {
   
   @Override
   public <S extends Quote> Iterable<S> saveAll (Iterable<S> iterable) {
-    return null;
+    List<Quote> savedQuotes = new ArrayList<>();
+    iterable.forEach((quote) -> {
+      savedQuotes.add(save(quote));
+    });
+    return (Iterable<S>) savedQuotes;
   }
   
   @Override
   public Optional<Quote> findById (String s) {
+    if(existsById(s)) {
+      String find_sql = "SELECT 1 FROM " + TABLE_NAME + " WHERE " + ID_COLUMN_NAME + "=?";
+      return Optional.ofNullable(jdbcTemplate.queryForObject(find_sql, Quote.class));
+    }
     return Optional.empty();
   }
   
   @Override
   public boolean existsById (String s) {
-    return false;
+    String exist_sql = "SELECT EXISTS(SELECT 1 FROM " + TABLE_NAME + " WHERE " + ID_COLUMN_NAME +
+                           "=" + s + ")";
+    return jdbcTemplate.queryForObject(exist_sql, Boolean.class);
   }
   
   @Override
   public Iterable<Quote> findAll () {
-    return null;
+    String find_all_sql = "SELECT * FROM " + TABLE_NAME;
+    return (Iterable<Quote>) jdbcTemplate.queryForObject(find_all_sql, List.class);
   }
-  
+
   @Override
-  public Iterable<Quote> findAllById (Iterable<String> iterable) {
-    throw new UnsupportedOperationException("Not implemented");
+  public void deleteAll () {
+    String delete_all_sql = "DELETE * FROM " + TABLE_NAME;
+    jdbcTemplate.update(delete_all_sql);
   }
   
   @Override
   public long count () {
-    return 0;
+    String count_sql = "SELECT COUNT(*) FROM ";
+    return jdbcTemplate.queryForObject(count_sql, Long.class);
   }
   
   @Override
   public void deleteById (String s) {
-  
+    String delete_sql = "DELETE 1 FROM " +  TABLE_NAME + " WHERE " + ID_COLUMN_NAME + "=?";
+    jdbcTemplate.update(delete_sql, s);
   }
   
   @Override
@@ -111,9 +123,9 @@ public class QuoteDao implements CrudRepository<Quote, String> {
   public void deleteAll (Iterable<? extends Quote> iterable) {
     throw new UnsupportedOperationException("Not implemented");
   }
-  
+
   @Override
-  public void deleteAll () {
-  
+  public Iterable<Quote> findAllById (Iterable<String> iterable) {
+    throw new UnsupportedOperationException("Not implemented");
   }
 }
