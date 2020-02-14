@@ -55,7 +55,7 @@ public class QuoteService {
     Quote builtQuote = new Quote();
     
     builtQuote.setID(iexQuote.getSymbol());
-    builtQuote.setAskPrices(iexQuote.getIexAskPrice());
+    builtQuote.setAskPrice(iexQuote.getIexAskPrice());
     builtQuote.setAskSize(iexQuote.getIexAskSize());
     builtQuote.setBidPrice(iexQuote.getIexBidPrice());
     builtQuote.setBidSize(iexQuote.getIexBidSize());

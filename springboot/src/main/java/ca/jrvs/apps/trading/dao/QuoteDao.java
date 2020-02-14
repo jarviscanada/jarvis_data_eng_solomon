@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataRetrievalFailureException;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -62,7 +63,7 @@ public class QuoteDao implements CrudRepository<Quote, String> {
   
   private Object[] makeUpdateValues(Quote quote) {
     return new Object[]{quote.getLastPrice(), quote.getBidPrice(), quote.getBidSize(),
-                             quote.getAskPrices(), quote.getAskSize(), quote.getId()};
+                             quote.getAskPrice(), quote.getAskSize(), quote.getId()};
   }
   
   @Override
@@ -85,15 +86,18 @@ public class QuoteDao implements CrudRepository<Quote, String> {
   
   @Override
   public boolean existsById (String s) {
-    String exist_sql = "SELECT EXISTS(SELECT 1 FROM " + TABLE_NAME + " WHERE " + ID_COLUMN_NAME +
-                           "=" + s + ")";
+    String exist_sql =
+        "SELECT EXISTS(SELECT * FROM " + TABLE_NAME + " WHERE "
+                           + ID_COLUMN_NAME +"='" + s + "')";
     return jdbcTemplate.queryForObject(exist_sql, Boolean.class);
   }
   
   @Override
   public Iterable<Quote> findAll () {
     String find_all_sql = "SELECT * FROM " + TABLE_NAME;
-    return (Iterable<Quote>) jdbcTemplate.queryForObject(find_all_sql, List.class);
+    BeanPropertyRowMapper mapper = new BeanPropertyRowMapper();
+    mapper.setMappedClass(Quote.class);
+    return jdbcTemplate.query(find_all_sql, mapper);
   }
 
   @Override
@@ -104,13 +108,13 @@ public class QuoteDao implements CrudRepository<Quote, String> {
   
   @Override
   public long count () {
-    String count_sql = "SELECT COUNT(*) FROM ";
+    String count_sql = "SELECT COUNT(" + ID_COLUMN_NAME + ") FROM " + TABLE_NAME;
     return jdbcTemplate.queryForObject(count_sql, Long.class);
   }
   
   @Override
   public void deleteById (String s) {
-    String delete_sql = "DELETE 1 FROM " +  TABLE_NAME + " WHERE " + ID_COLUMN_NAME + "=?";
+    String delete_sql = "DELETE FROM " +  TABLE_NAME + " WHERE " + ID_COLUMN_NAME + "=?";
     jdbcTemplate.update(delete_sql, s);
   }
   

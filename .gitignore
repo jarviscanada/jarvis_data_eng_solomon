@@ -14,3 +14,4 @@ practice/
 springboot/.idea
 springboot/target/
 springboot/trading-app.iml
+springboot/psql/testDB.sh

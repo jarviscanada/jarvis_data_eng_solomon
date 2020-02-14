@@ -47,5 +47,4 @@ public class TestConfig {
     connectionManager.setDefaultMaxPerRoute(50);
     return connectionManager;
   }
-
 }
