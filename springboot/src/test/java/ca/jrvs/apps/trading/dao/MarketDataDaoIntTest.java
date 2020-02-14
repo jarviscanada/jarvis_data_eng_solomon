@@ -40,7 +40,10 @@ public class MarketDataDaoIntTest {
     List<IexQuote> iexQuotes = marketDataDao.findAllById(tickerList);
     assertEquals(iexQuotes.size(), 3);
     
-    iexQuotes.forEach(Assert::assertNotNull);
+   for (String ticker : tickerList) {
+    assertTrue(ticker.equalsIgnoreCase(marketDataDao.findById(ticker).get().getSymbol()));
+   }
+   
   }
   
 }

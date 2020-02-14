@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static ca.jrvs.apps.trading.util.TradingAppUtils.verifyTicker;
+
 @Repository
 public class QuoteDao implements CrudRepository<Quote, String> {
 
@@ -27,6 +29,7 @@ public class QuoteDao implements CrudRepository<Quote, String> {
   public static final Logger logger = LoggerFactory.getLogger(QuoteDao.class);
   private JdbcTemplate jdbcTemplate;
   private SimpleJdbcInsert simpleJdbcInsert;
+  private BeanPropertyRowMapper<Quote> mapper = new BeanPropertyRowMapper<>(Quote.class);
   
   @Autowired
   public QuoteDao (DataSource dataSource) {
@@ -70,6 +73,7 @@ public class QuoteDao implements CrudRepository<Quote, String> {
   public <S extends Quote> Iterable<S> saveAll (Iterable<S> iterable) {
     List<Quote> savedQuotes = new ArrayList<>();
     iterable.forEach((quote) -> {
+      verifyTicker(quote.getId());
       savedQuotes.add(save(quote));
     });
     return (Iterable<S>) savedQuotes;
@@ -77,33 +81,33 @@ public class QuoteDao implements CrudRepository<Quote, String> {
   
   @Override
   public Optional<Quote> findById (String s) {
-    if(existsById(s)) {
-      String find_sql = "SELECT 1 FROM " + TABLE_NAME + " WHERE " + ID_COLUMN_NAME + "=?";
-      return Optional.ofNullable(jdbcTemplate.queryForObject(find_sql, Quote.class));
+    verifyTicker(s);
+    if(existsById(s.toUpperCase())) {
+      String find_sql = "SELECT 1 FROM " + TABLE_NAME + " WHERE " + ID_COLUMN_NAME
+                            + "= '" + s + "'";
+      return Optional.ofNullable(jdbcTemplate.queryForObject(find_sql, mapper));
     }
     return Optional.empty();
   }
   
   @Override
   public boolean existsById (String s) {
+    verifyTicker(s);
     String exist_sql =
-        "SELECT EXISTS(SELECT * FROM " + TABLE_NAME + " WHERE "
-                           + ID_COLUMN_NAME +"='" + s + "')";
+        "SELECT EXISTS(SELECT * FROM " + TABLE_NAME + " WHERE " + ID_COLUMN_NAME +"='" + s + "')";
     return jdbcTemplate.queryForObject(exist_sql, Boolean.class);
   }
   
   @Override
   public Iterable<Quote> findAll () {
     String find_all_sql = "SELECT * FROM " + TABLE_NAME;
-    BeanPropertyRowMapper mapper = new BeanPropertyRowMapper();
-    mapper.setMappedClass(Quote.class);
     return jdbcTemplate.query(find_all_sql, mapper);
   }
 
   @Override
   public void deleteAll () {
-    String delete_all_sql = "DELETE * FROM " + TABLE_NAME;
-    jdbcTemplate.update(delete_all_sql);
+    String delete_all_sql = "DELETE FROM " + TABLE_NAME;//(SELECT * FROM " + TABLE_NAME + ")";
+    jdbcTemplate.execute(delete_all_sql);
   }
   
   @Override
@@ -114,8 +118,10 @@ public class QuoteDao implements CrudRepository<Quote, String> {
   
   @Override
   public void deleteById (String s) {
-    String delete_sql = "DELETE FROM " +  TABLE_NAME + " WHERE " + ID_COLUMN_NAME + "=?";
-    jdbcTemplate.update(delete_sql, s);
+    verifyTicker(s);
+    String delete_sql = "DELETE FROM " + TABLE_NAME + " WHERE " + ID_COLUMN_NAME
+                            + "= '" + s + "'";
+    jdbcTemplate.execute(delete_sql);
   }
   
   @Override

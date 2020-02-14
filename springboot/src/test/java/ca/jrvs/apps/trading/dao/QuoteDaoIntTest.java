@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import static org.junit.Assert.*;
 
@@ -25,13 +26,14 @@ public class QuoteDaoIntTest {
   
   @Autowired
   QuoteDao quoteDao;
-  Quote savedQuote, newQuote;
+  Quote savedQuote, newQuote, thirdQuote;
   
   @Before
   public void setUp () throws Exception {
     quoteDao = new QuoteDao(new TestConfig().dataSource());
     savedQuote = new Quote();
     newQuote = new Quote();
+    thirdQuote = new Quote();
   }
   
   @Before
@@ -48,7 +50,7 @@ public class QuoteDaoIntTest {
 
   @After
   public void deleteOne () {
-    quoteDao.deleteById(savedQuote.getId());
+    quoteDao.deleteAll();
   }
   
   @Test
@@ -63,13 +65,38 @@ public class QuoteDaoIntTest {
     newQuote.setBidPrice(12.1d);
     newQuote.setBidSize(BigInteger.valueOf(100));
     newQuote.setLastPrice(13d);
-    quoteDao.save(newQuote);
+    
+    thirdQuote.setID("MSFT");
+    thirdQuote.setTicker("MSFT");
+    thirdQuote.setAskPrice(11d);
+    thirdQuote.setAskSize(BigInteger.valueOf(10));
+    thirdQuote.setBidPrice(11.1d);
+    thirdQuote.setBidSize(BigInteger.valueOf(10));
+    thirdQuote.setLastPrice(12d);
+    
+    quoteDao.saveAll(Arrays.asList(newQuote, thirdQuote));
+    assertEquals(3, quoteDao.count());
   
-    assertEquals(2, quoteDao.count());
-    
     assertNotNull(quoteDao.findAll());
+  
+    savedQuote.setBidSize(BigInteger.valueOf(20));
+    assertNotNull(quoteDao.save(savedQuote));
     
+    assertNotNull(quoteDao.findById(thirdQuote.getId()));
+    
+    assertEquals(Optional.empty(), quoteDao.findById("GOOG"));
+  
     quoteDao.deleteById(newQuote.getId());
     assertFalse(quoteDao.existsById(newQuote.getId()));
+    
+    newQuote.setTicker("invalidTicker");
+    newQuote.setID("invalidTicker");
+    try {
+      quoteDao.save(newQuote);
+    } catch (IllegalArgumentException e) {
+      assertTrue(true);
+      return;
+    }
+    fail();
   }
 }

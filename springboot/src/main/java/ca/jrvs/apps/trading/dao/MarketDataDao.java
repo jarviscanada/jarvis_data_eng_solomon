@@ -2,6 +2,7 @@ package ca.jrvs.apps.trading.dao;
 
 import ca.jrvs.apps.trading.model.domain.IexQuote;
 import ca.jrvs.apps.trading.model.config.MarketDataConfig;
+import ca.jrvs.apps.trading.util.TradingAppUtils;
 import com.fasterxml.jackson.databind.*;
 import org.apache.http.HttpException;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -24,6 +25,8 @@ import java.io.IOException;
 import java.nio.IntBuffer;
 import java.util.*;
 
+import static ca.jrvs.apps.trading.util.TradingAppUtils.verifyTicker;
+
 @Repository
 public class MarketDataDao implements CrudRepository<IexQuote, String> {
   private static final String IEX_BATCH_PATH = "/stock/market/batch?symbols=%s&types=quote&token=";
@@ -45,6 +48,7 @@ public class MarketDataDao implements CrudRepository<IexQuote, String> {
    */
   @Override
   public Optional<IexQuote> findById (String ticker) {
+    verifyTicker(ticker);
     Optional<IexQuote> iexQuote;
     List<IexQuote> quotes = findAllById(Collections.singletonList(ticker));
     
@@ -68,6 +72,7 @@ public class MarketDataDao implements CrudRepository<IexQuote, String> {
     StringBuilder tickerListString = new StringBuilder();
   
     for (String ticker : iterable) {
+      verifyTicker(ticker);
       tickerListString.append(ticker);
       if (iterable.iterator().hasNext()) tickerListString.append(",");
     }
