@@ -1,5 +1,5 @@
 .idea/
-jdbc/SQL-Scripts/
+core_java/jdbc/SQL-Scripts/
 twitter/twitter.iml
 twitter/target/
 jdbc/target/
