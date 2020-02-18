@@ -67,7 +67,7 @@ public class QuoteController {
   @PutMapping(path="/dailyList")
   @ResponseStatus(HttpStatus.OK)
   @ResponseBody
-  public List<Quote> createQuote() {
+  public List<Quote> getDailyList() {
     try {
       return quoteService.findAllQuotes();
     } catch (Exception e) {
