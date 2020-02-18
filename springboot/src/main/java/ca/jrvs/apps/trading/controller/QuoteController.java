@@ -41,35 +41,38 @@ public class QuoteController {
       throw ResponseExceptionUtil.getResponseStatusException(e);
     }
   }
-
+  
   @PutMapping(path="/")
   @ResponseStatus(HttpStatus.OK)
-  public void saveQuote(Quote quote) {
+  @ResponseBody
+  public Quote putQuote(@RequestBody Quote quote) {
     try {
-      quoteService.updateMarketData();
+      return quoteService.saveQuote(quote);
+    } catch (Exception e) {
+      throw ResponseExceptionUtil.getResponseStatusException(e);
+    }
+  }
+
+  @PutMapping(path="/tickerId/{tickerId}")
+  @ResponseStatus(HttpStatus.OK)
+  @ResponseBody
+  public Quote createQuote(@RequestBody String tickerId) {
+    try {
+      return quoteService.saveQuote(tickerId);
+    } catch (Exception e) {
+      throw ResponseExceptionUtil.getResponseStatusException(e);
+    }
+  }
+
+  @PutMapping(path="/dailyList")
+  @ResponseStatus(HttpStatus.OK)
+  @ResponseBody
+  public List<Quote> createQuote() {
+    try {
+      return quoteService.findAllQuotes();
     } catch (Exception e) {
       throw ResponseExceptionUtil.getResponseStatusException(e);
     }
   }
   
-  @PutMapping(path="/")
-  @ResponseStatus(HttpStatus.OK)
-  public void saveQuotes(List<Quote> quotes) {
-    try {
-      quoteService.updateMarketData();
-    } catch (Exception e) {
-      throw ResponseExceptionUtil.getResponseStatusException(e);
-    }
-  }
-  
-  @PutMapping(path="/")
-  @ResponseStatus(HttpStatus.OK)
-  public void findAllQuotes() {
-    try {
-      quoteService.updateMarketData();
-    } catch (Exception e) {
-      throw ResponseExceptionUtil.getResponseStatusException(e);
-    }
-}
-
 }

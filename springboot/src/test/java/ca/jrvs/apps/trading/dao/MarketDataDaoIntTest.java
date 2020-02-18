@@ -1,5 +1,6 @@
 package ca.jrvs.apps.trading.dao;
 
+import ca.jrvs.apps.trading.TestConfig;
 import ca.jrvs.apps.trading.model.config.MarketDataConfig;
 import ca.jrvs.apps.trading.model.domain.IexQuote;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -18,24 +19,18 @@ import static org.junit.Assert.*;
 public class MarketDataDaoIntTest {
   
   MarketDataDao marketDataDao;
-  PoolingHttpClientConnectionManager connectionManager;
-  MarketDataConfig config;
+  TestConfig config;
   
   @Before
   public void setUp () throws Exception {
-    connectionManager = new PoolingHttpClientConnectionManager();
-    connectionManager.setMaxTotal(50);
-    connectionManager.setDefaultMaxPerRoute(50);
-  
-    config = new MarketDataConfig();
-    config.setToken(System.getenv("IEX_PUB_TOKEN"));
-    config.setHost("https://cloud.iexapis.com/v1/");
-  
-    marketDataDao = new MarketDataDao(connectionManager, config);
+    config = new TestConfig();
+    
+    marketDataDao = new MarketDataDao(config.httpClientConnectionManager(),
+        config.marketDataConfig());
   }
   
   @Test
-  public void findIexQuotesByTicker () {
+  public void integrationTest () {
     List<String> tickerList = Arrays.asList("MSFT", "AAPL", "TSLA");
     List<IexQuote> iexQuotes = marketDataDao.findAllById(tickerList);
     assertEquals(iexQuotes.size(), 3);

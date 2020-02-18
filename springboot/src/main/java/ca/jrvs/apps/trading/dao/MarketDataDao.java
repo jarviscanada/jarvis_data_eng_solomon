@@ -22,10 +22,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 import java.io.IOException;
-import java.nio.IntBuffer;
 import java.util.*;
-
-import static ca.jrvs.apps.trading.util.TradingAppUtils.verifyTicker;
 
 @Repository
 public class MarketDataDao implements CrudRepository<IexQuote, String> {
@@ -48,7 +45,6 @@ public class MarketDataDao implements CrudRepository<IexQuote, String> {
    */
   @Override
   public Optional<IexQuote> findById (String ticker) {
-    verifyTicker(ticker);
     Optional<IexQuote> iexQuote;
     List<IexQuote> quotes = findAllById(Collections.singletonList(ticker));
     
@@ -72,7 +68,6 @@ public class MarketDataDao implements CrudRepository<IexQuote, String> {
     StringBuilder tickerListString = new StringBuilder();
   
     for (String ticker : iterable) {
-      verifyTicker(ticker);
       tickerListString.append(ticker);
       if (iterable.iterator().hasNext()) tickerListString.append(",");
     }

@@ -54,7 +54,7 @@ public class QuoteDaoIntTest {
   }
   
   @Test
-  public void intTest () {
+  public void integrationTest () {
     assertTrue(quoteDao.existsById(savedQuote.getId()));
     assertEquals(1, quoteDao.count());
   
