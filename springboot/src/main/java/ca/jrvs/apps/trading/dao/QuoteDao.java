@@ -13,6 +13,7 @@ import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
+
 import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,25 +35,24 @@ public class QuoteDao implements CrudRepository<Quote, String> {
     jdbcTemplate = new JdbcTemplate(dataSource);
     simpleJdbcInsert = new SimpleJdbcInsert(dataSource).withTableName(TABLE_NAME);
   }
-  
+
   @Override
   public Quote save (Quote quote) {
-    if (existsById(quote.getId())) {
-      int updatedRowNo = updateOne(quote);
-      if (updatedRowNo != 1) {
-        throw new DataRetrievalFailureException("Unable to update quote");
+    if (quote.getId() != null  && existsById(quote.getId())) {
+      if (updateOne(quote) != 1) {
+        throw new DataRetrievalFailureException("Unable to update " + quote.getClass().getSimpleName());
       }
     } else {
       addOne(quote);
     }
     return quote;
   }
-  
+
   private void addOne(Quote quote) {
     SqlParameterSource parameterSource = new BeanPropertySqlParameterSource(quote);
     int row = simpleJdbcInsert.execute(parameterSource);
     if (row != 1) {
-      throw new IncorrectResultSizeDataAccessException("Failed to insert", 1, row);
+      throw new IncorrectResultSizeDataAccessException("Failed to insert ", 1, row);
     }
   }
   
@@ -66,7 +66,7 @@ public class QuoteDao implements CrudRepository<Quote, String> {
     return new Object[]{quote.getLastPrice(), quote.getBidPrice(), quote.getBidSize(),
                              quote.getAskPrice(), quote.getAskSize(), quote.getId()};
   }
-  
+
   @Override
   public <S extends Quote> Iterable<S> saveAll (Iterable<S> iterable) {
     List<Quote> savedQuotes = new ArrayList<>();
@@ -102,7 +102,7 @@ public class QuoteDao implements CrudRepository<Quote, String> {
 
   @Override
   public void deleteAll () {
-    String delete_all_sql = "DELETE FROM " + TABLE_NAME;//(SELECT * FROM " + TABLE_NAME + ")";
+    String delete_all_sql = "DELETE FROM " + TABLE_NAME;
     jdbcTemplate.execute(delete_all_sql);
   }
   
