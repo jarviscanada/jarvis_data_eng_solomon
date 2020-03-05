@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.util.List;
 
 @Repository
 public class AccountDao extends JdbcCrudDao<Account>{
@@ -41,6 +42,21 @@ public class AccountDao extends JdbcCrudDao<Account>{
   
   Class<Account> getEntityClass () {
     return Account.class;
+  }
+  
+  public Account findByTraderId (Integer traderId) {
+    Account foundAccount = null;
+    for (Account account : ((List<Account>) findAll())) {
+      if (account.getTraderId().equals(traderId)) {
+        foundAccount = account;
+      }
+    }
+    return foundAccount;
+  }
+  
+  public Account updateAmountById (Account account, Double newAmount) {
+    account.setAmount(newAmount);
+    return save(account);
   }
   
   @Override
