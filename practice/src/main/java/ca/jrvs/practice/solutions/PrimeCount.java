@@ -14,26 +14,29 @@ public class PrimeCount {
   public static ArrayList<Integer> primesLessThanN (int n){
     ArrayList<Integer> foundPrimesList = new ArrayList<>();
     boolean toBeAdded = true;
+    
     if(n < 0) throw new IllegalArgumentException("n must be greater than 0");
     if(n < 2) return foundPrimesList;
     if(n > 2) foundPrimesList.add(2);
+  
     for (int i = 3; i < n; i++) {
       if (i % 2 != 0) {
-        for (int j = 1; j < i; j++) {
-          if (i % 2*j+1 == 0 && i != 2*j+1) {
-              toBeAdded &= false;
+        for (int j = 3; j <= Math.ceil(Math.sqrt(i)); j++) {
+          if (i != j && i % j == 0) {
+            toBeAdded &= false;
           }
         }
-        if(toBeAdded && foundPrimesList.contains(i) == false) {
+        if (toBeAdded) {
           foundPrimesList.add(i);
-          toBeAdded = true;
         }
+        toBeAdded = true;
       }
     }
+    
     return foundPrimesList;
   }
 
   public static void main (String[] args) {
-    System.out.println(PrimeCount.primesLessThanN(10));
+    System.out.println(PrimeCount.primesLessThanN(120));
   }
 }

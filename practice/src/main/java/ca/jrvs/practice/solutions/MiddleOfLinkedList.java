@@ -2,7 +2,7 @@ package main.java.ca.jrvs.practice.solutions;
 
 public class MiddleOfLinkedList<E> {
   ListNode<E> listHead;
-  int size = 1;
+  static int size = 0;
   
   private static class ListNode<E> {
     E contents = null;
@@ -10,6 +10,7 @@ public class MiddleOfLinkedList<E> {
     public ListNode(E value){
       contents = value;
       next = null;
+      size++;
     }
   }
   
@@ -41,13 +42,16 @@ public class MiddleOfLinkedList<E> {
     third.next = fourth;
     fourth.next = fifth;
     
-    System.out.println(MiddleOfLinkedList.findMiddleOfLinkedList(listHead).contents);
+    System.out.println(MiddleOfLinkedList.findMiddleOfLinkedList(listHead).contents + " is "
+                           + "located in the middle of the linked list");
   
     listHead.next = second;
     second.next = third;
     third.next = fourth;
     fourth.next = null;
+    size--;
     
-    System.out.println(MiddleOfLinkedList.findMiddleOfLinkedList(listHead).contents);
+    System.out.println(MiddleOfLinkedList.findMiddleOfLinkedList(listHead).contents + " is "
+                           + "located in the middle of the linked list");
   }
 }

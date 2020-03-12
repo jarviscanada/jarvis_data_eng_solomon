@@ -25,14 +25,16 @@ public class Fibonacci {
       storedFibs.putIfAbsent(i, nthFibonacci(i));
     }
   
-    return storedFibs.get(n - 2) + storedFibs.get(n - 1);
+    return storedFibs.get(n - 1) + storedFibs.get(n - 2);
   }
 
   public static void main (String[] args) {
     for (int i = 0; i < 10; i++) {
       System.out.print(nthFibonacci(i) + " ");
     }
+    
     System.out.println("\n");
+    
     for (int i = 0; i < 12; i++) {
       System.out.print(nthFibonacciDP(i) + " ");
     }

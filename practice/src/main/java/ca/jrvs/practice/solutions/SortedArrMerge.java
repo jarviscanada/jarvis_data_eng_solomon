@@ -1,45 +1,29 @@
 package main.java.ca.jrvs.practice.solutions;
 
+import java.util.Arrays;
+
 public class SortedArrMerge<E>{
   public static void mergedSortedArray(Integer[] first, Integer[] second) {
-    int endOfFirstValues = first.length - second.length - 1; //2 -> first.length - 1 = 2 -> 5
-    int current = 0; //0 -> second.length - 1
+    int endOfContentIndex = first.length - second.length - 1;
+    int index1 = 0;
+    int index2 = 0;
     
-    while(endOfFirstValues < first.length) {
-//      if (first[] > second[]) {
-//        //push stuff all over + 1
-//        //replace first i with second current
-//        //done
-//      } else { //second is greater or equal
-//        //push stuff over + 1
-//        //replace first i + 1 with second current
-//      }
-//      endOfFirstValues++;
-//      current++;
+    while(index1 < first.length && index2 < second.length){
+      index1 = 0;
+      while(second[index2] >= first[index1] && index1 <= endOfContentIndex) {
+        index1++;
+      }
+      push(first, index1, endOfContentIndex);
+      first[index1] = second[index2++];
+      endOfContentIndex++;
     }
   }
   
-  //1, 2, 3] 0, 0, 0 <- 2
-
-  //1<, >2, 2->, 3->] 0, 0
-
-  //1, >2, 2, 3] 0, 0 <- 5
-
-  //1<, >2, 2, 3] 0, 0
-  //1, >2<, 2, 3] 0, 0
-  //1, >2, 2<, 3] 0, 0
-  //1, >2, 2, 3<] 0, 0
-  //1, >2, 2, 3, >5], 0
-
-  //1, >2, 2, 3, >5], 0 <- 6
-
-  //1<, >2, 2, 3 >5], 0
-  //1, >2<, 2, 3 >5], 0
-  //1, >2, 2<, 3 >5], 0
-  //1, >2, 2, 3< >5], 0
-  //1, >2, 2, 3, >5<], 0
-
-  //1, >2, 2, 3, >5, >6]
+  private static void push(Integer[] array, int startIndex, int endIndex) {
+    for (int i = endIndex; i >= startIndex ; i--) {
+      array[i + 1] = array[i];
+    }
+  }
 
   
   public static void main (String[] args) {
@@ -47,7 +31,16 @@ public class SortedArrMerge<E>{
     Integer[] nums2 = new Integer[]{2, 5, 6};
     
     mergedSortedArray(nums1, nums2);
+  
+    Arrays.stream(nums1).forEach(integer -> System.out.print(integer + " "));
     
-    System.out.println(nums1);
+    System.out.print("\n");
+    
+    nums1 = new Integer[]{3, 5, 7, 0, 0, 0, 0, 0};
+    nums2 = new Integer[]{3, 9, 11, 11, 14};
+  
+    mergedSortedArray(nums1, nums2);
+  
+    Arrays.stream(nums1).forEach(integer -> System.out.print(integer + " "));
   }
 }

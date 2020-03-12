@@ -9,7 +9,7 @@ public class AsciiToInt {
       if (letters[i] < '0' || letters[i] > '9') {
         throw new NumberFormatException("Non-digit character: " + letters[i] );
       }
-  stringValue += (letters[i] - '0') * Math.pow(10, letters.length - i - 1);
+      stringValue += (letters[i] - '0') * Math.pow(10, letters.length - i - 1);
     }
     
     return stringValue;

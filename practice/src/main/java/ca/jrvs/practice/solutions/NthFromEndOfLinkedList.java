@@ -1,6 +1,9 @@
 package main.java.ca.jrvs.practice.solutions;
 
 public class NthFromEndOfLinkedList<E> {
+  static ListNode listHead;
+  static int size = 0;
+  
   public static class ListNode<E> {
     E contents = null;
     ListNode<E> next;
@@ -60,19 +63,19 @@ public class NthFromEndOfLinkedList<E> {
   }
 
   public static void main (String[] args) { //   head -> second -> third -> fourth -> fifth -> null
-    ListNode<String> head = new ListNode<>("head");
+    listHead = new ListNode<>("head");
     ListNode<String> second = new ListNode<>("second");
     ListNode<String> third = new ListNode<>("third");
     ListNode<String> fourth = new ListNode<>("fourth");
     ListNode<String> fifth = new ListNode<>("fifth");
-    
-    head.setNext(second);
+  
+    listHead.setNext(second);
     second.setNext(third);
     third.setNext(fourth);
     fourth.setNext(fifth);
     
     int n = 5;
     
-    System.out.println(returnNthFromLast(head, n).contents);
+    System.out.println(returnNthFromLast(listHead, n).contents);
   }
 }

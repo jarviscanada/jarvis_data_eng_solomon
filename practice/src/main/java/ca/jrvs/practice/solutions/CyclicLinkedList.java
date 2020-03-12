@@ -2,8 +2,8 @@ package main.java.ca.jrvs.practice.solutions;
 
 public class CyclicLinkedList {
   private static class ListNode<E> {
-    E contents = null;
-    ListNode<E> next = null;
+    E contents;
+    ListNode<E> next;
   
     public ListNode (E contents, ListNode<E> next) {
       this.contents = contents;
@@ -23,11 +23,11 @@ public class CyclicLinkedList {
   }
   
   public static void main (String[] args) {
-    ListNode<Integer> tail = new ListNode<Integer>(0, null);
-    ListNode<Integer> fourth = new ListNode<Integer>(0, tail);
-    ListNode<Integer> third = new ListNode<Integer>(0, fourth);
-    ListNode<Integer> second = new ListNode<Integer>(0, third);
-    ListNode<Integer> start = new ListNode<Integer>(0, second);
+    ListNode<Integer> tail = new ListNode<>(0, null);
+    ListNode<Integer> fourth = new ListNode<>(0, tail);
+    ListNode<Integer> third = new ListNode<>(0, fourth);
+    ListNode<Integer> second = new ListNode<>(0, third);
+    ListNode<Integer> start = new ListNode<>(0, second);
     tail.next = start;
     
     System.out.println("The given linked list "
