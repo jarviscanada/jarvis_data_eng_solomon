@@ -85,7 +85,7 @@ import static org.junit.Assert.*;
       assertEquals(foundAccounts.get(i).getAmount(), findAllAccounts.get(i).getAmount());
     }
     
-    assertEquals(accountDao.findByTraderId(trader.getId()).getId(), account.getId());
+    assertEquals(accountDao.findByTraderId(trader.getId()).get().getId(), account.getId());
     
     assertNotEquals(0.0, accountDao.updateAmountById(savedAccount, 1337.0));
     

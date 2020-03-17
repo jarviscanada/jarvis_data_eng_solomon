@@ -5,11 +5,10 @@ import ca.jrvs.apps.trading.dao.AccountDao;
 import ca.jrvs.apps.trading.dao.PositionDao;
 import ca.jrvs.apps.trading.dao.SecurityOrderDao;
 import ca.jrvs.apps.trading.dao.TraderDao;
-import ca.jrvs.apps.trading.model.TraderAccountView;
+import ca.jrvs.apps.trading.model.view.TraderAccountView;
 import ca.jrvs.apps.trading.model.domain.Trader;
 import org.junit.Before;
 import org.junit.Test;
-
 import java.sql.Date;
 
 import static org.junit.Assert.*;
@@ -33,6 +32,7 @@ public class TraderAccountServiceIntTest {
     trader.setDob(new Date(System.currentTimeMillis()));
     trader.setCountry("Canada");
     trader.setEmail("solomoncblake@gmail.com");
+    
   }
   
   @Test
@@ -46,9 +46,12 @@ public class TraderAccountServiceIntTest {
     } catch (Exception e) {
       assert(true);
     }
-    
-    traderAccountService.deposit(traderAccountView.getTrader().getId(), 1200.);
   
+    traderAccountView.setAccount(
+        traderAccountService.deposit(traderAccountView.getTrader().getId(), 1200.));
+    
+    assertNotEquals(traderAccountView.getAccount().getAmount(), 0);
+    
     try {
       traderAccountService.withdraw(traderAccountView.getTrader().getId(), -1.);
     } catch (Exception e) {
@@ -61,9 +64,13 @@ public class TraderAccountServiceIntTest {
       assert(true);
     }
     
-    traderAccountService.withdraw(traderAccountView.getTrader().getId(), 1199.);
-    
-    assertTrue(traderAccountView.getAccount().getAmount() == 1.);
+    traderAccountView.setAccount(
+        traderAccountService.withdraw(traderAccountView.getTrader().getId(), 1199.));
+  
+    assertEquals(1, traderAccountView.getAccount().getAmount(), 0.0);
+  
+    traderAccountView.setAccount(
+        traderAccountService.withdraw(traderAccountView.getTrader().getId(), 1.));
     
     traderAccountService.deleteTraderById(trader.getId());
   }

@@ -1,17 +1,13 @@
 package ca.jrvs.apps.trading.service;
 
 import ca.jrvs.apps.trading.dao.*;
-import ca.jrvs.apps.trading.model.domain.Account;
-import ca.jrvs.apps.trading.model.domain.MarketOrderDto;
-import ca.jrvs.apps.trading.model.domain.Position;
-import ca.jrvs.apps.trading.model.domain.SecurityOrder;
+import ca.jrvs.apps.trading.model.domain.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
-import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -35,6 +31,8 @@ public class OrderService {
   
   public SecurityOrder executeMarketOrder (MarketOrderDto marketOrderDto) {
     SecurityOrder order = new SecurityOrder();
+    
+    order.setAccountId(marketOrderDto.getAccountId());
     order.setSize(marketOrderDto.getOrderSize());
     order.setTicker(marketOrderDto.getTicker());
     
@@ -53,13 +51,16 @@ public class OrderService {
 
   protected void handleBuyMarketOrder (MarketOrderDto marketOrderDto, SecurityOrder securityOrder,
                                     Account account) {
+    Quote quote = quoteDao.findById(marketOrderDto.getTicker())
+                          .orElseThrow(
+                              () -> new IllegalArgumentException("Unable to find '"
+                                                                     + marketOrderDto.getTicker()
+                                                                     + "'"));
     if (account.getAmount() >= marketOrderDto.getOrderSize()
-                * quoteDao.findById(marketOrderDto.getTicker()).get().getAskPrice()) {
+                * quote.getBidPrice()) {
       accountDao.updateAmountById(account, account.getAmount()
-              - marketOrderDto.getOrderSize()
-                    * quoteDao.findById(marketOrderDto.getTicker()).get().getAskPrice());
-      
-      securityOrder.setPrice(quoteDao.findById(marketOrderDto.getTicker()).get().getAskPrice());
+              - marketOrderDto.getOrderSize() * quote.getBidPrice());
+      securityOrder.setPrice(quote.getBidPrice());
       securityOrder.setAccountId(account.getId());
     } else {
       throw new IllegalArgumentException("Account balance must be greater than or equal to "
@@ -71,11 +72,21 @@ public class OrderService {
   
   protected void handleSellMarketOrder (MarketOrderDto marketOrderDto, SecurityOrder securityOrder,
                                         Account account) {
-    List<Position> positionList = positionDao.findByAccountId(account.getId());
-    
-    if (positionList.size() > 0 && positionList.stream()
-                   .anyMatch(position -> position.getTicker().equals(marketOrderDto.getTicker()))) {
-      
+    Position matchedPosition =
+        positionDao.findByAccountId(account.getId()).stream().filter(
+            position -> position.getTicker().equals(marketOrderDto.getTicker()))
+            .collect(Collectors.toList()).get(0);
+  
+    Quote quote = quoteDao.findById(marketOrderDto.getTicker())
+                      .orElseThrow(
+                          () -> new IllegalArgumentException("Unable to find '"
+                                                                 + marketOrderDto.getTicker()
+                                                                 + "'"));
+    if (marketOrderDto.getOrderSize() <= matchedPosition.getPosition()) {
+      accountDao.updateAmountById(account,
+          account.getAmount() + marketOrderDto.getOrderSize() * quote.getAskPrice());
+      securityOrder.setPrice(quote.getAskPrice());
+      securityOrder.setAccountId(account.getId());
     } else {
       throw new IllegalArgumentException("No positions exists for this order.");
     }

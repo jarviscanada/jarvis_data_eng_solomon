@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class AccountDao extends JdbcCrudDao<Account>{
@@ -44,14 +45,14 @@ public class AccountDao extends JdbcCrudDao<Account>{
     return Account.class;
   }
   
-  public Account findByTraderId (Integer traderId) {
+  public Optional<Account> findByTraderId (Integer traderId) {
     Account foundAccount = null;
     for (Account account : ((List<Account>) findAll())) {
       if (account.getTraderId().equals(traderId)) {
         foundAccount = account;
       }
     }
-    return foundAccount;
+    return Optional.ofNullable(foundAccount);
   }
   
   public Account updateAmountById (Account account, Double newAmount) {

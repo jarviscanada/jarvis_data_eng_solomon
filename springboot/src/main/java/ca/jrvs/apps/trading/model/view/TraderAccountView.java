@@ -1,4 +1,4 @@
-package ca.jrvs.apps.trading.model;
+package ca.jrvs.apps.trading.model.view;
 
 import ca.jrvs.apps.trading.model.domain.Account;
 import ca.jrvs.apps.trading.model.domain.Trader;
@@ -20,5 +20,13 @@ public class TraderAccountView {
   
   public Account getAccount () {
     return account;
+  }
+
+  public void setTrader (Trader trader) {
+    this.trader = trader;
+  }
+  
+  public void setAccount (Account account) {
+    this.account = account;
   }
 }

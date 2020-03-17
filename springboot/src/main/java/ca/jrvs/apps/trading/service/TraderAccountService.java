@@ -4,7 +4,7 @@ import ca.jrvs.apps.trading.dao.AccountDao;
 import ca.jrvs.apps.trading.dao.PositionDao;
 import ca.jrvs.apps.trading.dao.SecurityOrderDao;
 import ca.jrvs.apps.trading.dao.TraderDao;
-import ca.jrvs.apps.trading.model.TraderAccountView;
+import ca.jrvs.apps.trading.model.view.TraderAccountView;
 import ca.jrvs.apps.trading.model.domain.Account;
 import ca.jrvs.apps.trading.model.domain.Trader;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +60,9 @@ public class TraderAccountService {
     if (traderDao.existsById(id) == false) {
       throw new IllegalArgumentException("No such account exists");
     }
-    Account traderAccount = accountDao.findByTraderId(id);
+    Account traderAccount =
+        accountDao.findByTraderId(id).orElseThrow(() -> new IllegalArgumentException("Invalid " +
+                                                                                         "traderId"));
     if (traderAccount.getAmount() != 0) throw new IllegalArgumentException("Associated account "
                                                                           + "has non-zero balance");
     
@@ -86,8 +88,9 @@ public class TraderAccountService {
    * less than or equal to 0.
    */
   public Account deposit (Integer traderId, Double funds) {
-    if(funds > 0 || traderDao.existsById(traderId)){
-      Account foundAccount = accountDao.findByTraderId(traderId);
+    if(funds > 0 && traderDao.existsById(traderId)){
+      Account foundAccount = accountDao.findByTraderId(
+          traderId).orElseThrow(() -> new IllegalArgumentException("Invalid traderId"));
       return accountDao.updateAmountById(foundAccount, foundAccount.getAmount() + funds);
     } else {
       throw new IllegalArgumentException("Trader ID must be valid and not null.\nFunds to "
@@ -104,8 +107,9 @@ public class TraderAccountService {
    * less than or equal to 0.
    */
   public Account withdraw (Integer traderId, Double funds) {
-    if(funds > 0 || traderDao.existsById(traderId)) {
-      Account foundAccount = accountDao.findByTraderId(traderId);
+    if(funds > 0 && traderDao.existsById(traderId)) {
+      Account foundAccount = accountDao.findByTraderId(traderId).orElseThrow(() ->
+                                                  new IllegalArgumentException("Invalid traderId"));
       if (foundAccount.getAmount() - funds >= 0) {
         return accountDao.updateAmountById(foundAccount,foundAccount.getAmount() - funds);
       } else {
