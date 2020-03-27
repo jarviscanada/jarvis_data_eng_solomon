@@ -71,7 +71,7 @@ public abstract class JdbcCrudDao<T extends Entity<Integer>> implements CrudRepo
   }
   
   /**
-   * Adds the entity into the database, as well as automaically setting its id value
+   * Adds the entity into the database, as well as automatically setting its id value
    * @param entity
    * @param <S> Entity type
    */

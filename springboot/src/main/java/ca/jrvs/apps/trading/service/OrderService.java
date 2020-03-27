@@ -1,11 +1,15 @@
 package ca.jrvs.apps.trading.service;
 
-import ca.jrvs.apps.trading.dao.*;
+import ca.jrvs.apps.trading.dao.AccountDao;
+import ca.jrvs.apps.trading.dao.PositionDao;
+import ca.jrvs.apps.trading.dao.QuoteDao;
+import ca.jrvs.apps.trading.dao.SecurityOrderDao;
 import ca.jrvs.apps.trading.model.domain.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import javax.transaction.Transactional;
 import java.util.stream.Collectors;
 

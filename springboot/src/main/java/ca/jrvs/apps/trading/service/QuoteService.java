@@ -75,7 +75,7 @@ public class QuoteService {
    * @return saved quote object
    */
   public Quote saveQuote (String ticker) {
-    return quoteDao.save(quoteDao.findById(verifyTicker(ticker)).get());
+    return quoteDao.save(buildQuoteFromIexQuote(findIexQuoteByTicker(verifyTicker(ticker))));
   }
 
   /**
