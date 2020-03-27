@@ -45,7 +45,7 @@ With the ability to access real-time market data through IEX Cloud, I created an
 		docker run --name trading-app -e PSQL_URL=jdbc:postgresql://trading-psql:5432/${POSTGRES_DB} -e PSQL_USER=${POSTGRES_USER} -e PSQL_PASSWORD=${POSTGRES_PASSWORD} -e IEX_PUB_TOKEN=${IEX_PUB_TOKEN} --network trading-net -p 8080:8080 -t trading-app
 		
 
-The Swagger UI for the trading application can be access from this here: http://localhost:8080/swagger-ui.html#/
+The Swagger UI for the trading application can be access from this here: http://localhost:8080/swagger-ui.html/
 
 # Architecture
 
@@ -80,7 +80,7 @@ IEX Cloud hosts real time stock market data on their servers and provide an easy
 
 ![Swagger UI for Trading Application](./assets/TradingSwagger.png)
 
-Swagger is a suite which provides a variety of open source tools, all of which allow users to visualize and consume application REST APIs easily. While there are other more direct ways to consume these APIs, Swagger opens up the ability to interact with these systems to a wider demographic, including those who have little to no technical training. The link to access the trading application's Swagger UI is: http://localhost:8080/swagger-ui.html#/.
+Swagger is a suite which provides a variety of open source tools, all of which allow users to visualize and consume application REST APIs easily. While there are other more direct ways to consume these APIs, Swagger opens up the ability to interact with these systems to a wider demographic, including those who have little to no technical training. The link to access the trading application's Swagger UI is: http://localhost:8080/swagger-ui.html/.
 
 ## Quote Controller
 
