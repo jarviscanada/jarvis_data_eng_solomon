@@ -40,9 +40,20 @@ With the ability to access real-time market data through IEX Cloud, I created an
   - Start containers using data from the environment (`export POSTGRES_USER=postgres` etc.).
   
 		
-		docker run --name trading-psql -e POSTGRES_PASSWORD=${POSTGRES_PASSWORD} -e POSTGRES_DB=${POSTGRES_DB} -e POSTGRES_USER=${POSTGRES_USER} --network trading-net -d -p 5432:5432 trading-psql
+		docker run --name trading-psql\
+		-e POSTGRES_PASSWORD=${POSTGRES_PASSWORD}\
+		-e POSTGRES_DB=${POSTGRES_DB}\
+		-e POSTGRES_USER=${POSTGRES_USER}\
+		--network trading-net -d -p 5432:5432 trading-psql
+		
 		docker container start trading-psql
-		docker run --name trading-app -e PSQL_URL=jdbc:postgresql://trading-psql:5432/${POSTGRES_DB} -e PSQL_USER=${POSTGRES_USER} -e PSQL_PASSWORD=${POSTGRES_PASSWORD} -e IEX_PUB_TOKEN=${IEX_PUB_TOKEN} --network trading-net -p 8080:8080 -t trading-app
+		
+		docker run --name trading-app\
+		-e PSQL_URL=jdbc:postgresql://trading-psql:5432/${POSTGRES_DB}\
+		-e PSQL_USER=${POSTGRES_USER}\
+		-e PSQL_PASSWORD=${POSTGRES_PASSWORD}\
+		-e IEX_PUB_TOKEN=${IEX_PUB_TOKEN}\
+		--network trading-net -p 8080:8080 -t trading-app
 		
 
 The Swagger UI for the trading application can be access from this here: http://localhost:8080/swagger-ui.html/
