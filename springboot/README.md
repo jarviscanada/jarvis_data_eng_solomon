@@ -19,34 +19,31 @@ With the ability to access real-time market data through IEX Cloud, I created an
 - Run the commands below to get started:
 	- Build both the PSQL and Trading application docker images and verify their existence:
 
-    ``` shell
-    cd ./psql
-    docker build -t trading-psql .
-    docker image ls -f reference=trading-psql
-    ```
+		``` shell
+		cd ./psql
+		docker build -t trading-psql .
+		docker image ls -f reference=trading-psql
+		```
 
-    ``` shell
-    cd ..
-    docker build -t trading-app .
-    docker image ls -f reference=trading-app
-    ```
+		``` shell
+		cd ..
+		docker build -t trading-app .
+		docker image ls -f reference=trading-app
+		```
 
 	- Create the docker network required for the containers and verify its existence:
-    ``` shell
-    docker network create trading-netw
-    docker network ls
-    ```
+		``` shell
+		docker network create trading-network
+		docker network ls
+		```
 	  
-  - Start containers using data from the environment (`export POSTGRES_USER=postgres  `).
-    
-    ``` shell
-  docker run --name trading-psql -e POSTGRES_PASSWORD=${POSTGRES_PASSWORD} -e POSTGRES_DB=${POSTGRES_DB} -e POSTGRES_USER=${POSTGRES_USER} --network trading-net -d -p 5432:5432 trading-psql
-  docker container start trading-psql
-    ```
-    
-    ``` shell
-    docker run --name trading-app -e PSQL_URL=jdbc:postgresql://trading-psql:5432/${POSTGRES_DB} -e POSTGRES_USER=${POSTGRES_USER} -e PSQL_PASSWORD=${POSTGRES_PASSWORD} -e IEX_PUB_TOKEN=${IEX_PUB_TOKEN} --network trading-net -p 8080:8080 -t trading-app
-    ```
+  - Start containers using data from the environment (`export POSTGRES_USER=postgres` etc.).
+  
+		``` shell
+		docker run --name trading-psql -e POSTGRES_PASSWORD=${POSTGRES_PASSWORD} -e POSTGRES_DB=${POSTGRES_DB} -e POSTGRES_USER=${POSTGRES_USER} --network trading-net -d -p 5432:5432 trading-psql
+		docker container start trading-psql
+		docker run --name trading-app -e PSQL_URL=jdbc:postgresql://trading-psql:5432/${POSTGRES_DB} -e PSQL_USER=${POSTGRES_USER} -e PSQL_PASSWORD=${POSTGRES_PASSWORD} -e IEX_PUB_TOKEN=${IEX_PUB_TOKEN} --network trading-net -p 8080:8080 -t trading-app
+		```
 
 The Swagger UI for the trading application can be access from this here: http://localhost:8080/swagger-ui.html#/
 
