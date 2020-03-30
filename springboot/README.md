@@ -128,7 +128,7 @@ This controller is used to display trader information in an easy to read format:
 
 # Docker Deployment
 ---
-While briefly shown in the [component diagram](# Architecture) and in the [quick start](# Quick Start) section, there is more to how docker is used to deploy microservices. When built, the images that are created are made based on the content of the relevant Dockerfile. Both of the files used to build our application and database reference various images, which are pulled from the Docker Hub and use as the files foundation. Below is a diagram showing how Docker interacts with the microservice, from the creation of the image, to deployment:
+While briefly shown in the [component diagram](#Architecture) and in the [quick-start](#Quick-Start) section, there is more to how docker is used to deploy microservices. When built, the images that are created are made based on the content of the relevant Dockerfile. Both of the files used to build our application and database reference various images, which are pulled from the Docker Hub and use as the files foundation. Below is a diagram showing how Docker interacts with the microservice, from the creation of the image, to deployment:
 
 ![Docker deployment diagram](./assets/DockerDeploy.svg)
 
