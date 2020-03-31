@@ -4,9 +4,6 @@ target/
 *.war
 *.ear
 *.logs
-<<<<<<< HEAD
 practice/
-=======
->>>>>>> release
 springboot/psql/testDB.sh
 core_java/jdbc/SQL-Scripts/
