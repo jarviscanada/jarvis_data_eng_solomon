@@ -4,5 +4,6 @@ target/
 *.war
 *.ear
 *.logs
+practice/
 springboot/psql/testDB.sh
 core_java/jdbc/SQL-Scripts/
