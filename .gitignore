@@ -1,12 +1,8 @@
-.idea/
-jdbc/SQL-Scripts/
-twitter/twitter.iml
-twitter/target/
-jdbc/target/
-grep/target/
-jdbc/.idea/
-jdbc/target
-twitter/.idea/
-jdbc/jdbc.iml
-grep/grep.iml
-twitter/src/main/java/ca/jrvs/apps/example/
+ target/
+*.class
+*.jar
+*.war
+*.ear
+*.logs
+springboot/psql/testDB.sh
+core_java/jdbc/SQL-Scripts/
