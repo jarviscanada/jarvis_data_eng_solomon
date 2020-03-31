@@ -1,8 +1,8 @@
-.idea/
-core_java/jdbc/SQL-Scripts/
-*.iml
 target/
-*.iml
-twitter/src/main/java/ca/jrvs/apps/example/
-practice/
+*.class
+*.jar
+*.war
+*.ear
+*.logs
 springboot/psql/testDB.sh
+core_java/jdbc/SQL-Scripts/
