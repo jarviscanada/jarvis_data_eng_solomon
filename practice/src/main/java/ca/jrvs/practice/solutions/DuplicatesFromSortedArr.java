@@ -40,7 +40,7 @@ public class DuplicatesFromSortedArr {
     
     System.out.println(length1);
     System.out.println(first.toString());
-    
+  
     System.out.println(length2);
     System.out.println(second.toString());
   }

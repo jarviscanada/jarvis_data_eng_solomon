@@ -1,10 +1,5 @@
 package main.java.ca.jrvs.practice.solutions;
 
-import org.omg.CORBA.INTERNAL;
-
-import java.net.Inet4Address;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Stack;
 
 public class ValidParentheses {
