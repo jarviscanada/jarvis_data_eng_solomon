@@ -8,7 +8,7 @@ JavaGrepImp provides equivalent functionality to the shell command:
 
 ``` >> egrep -r {regEx} {rootPath} > {outfile}```
 
-The result of this command is, recursively search beginning form the provided directory and return files that match the given regular expression. Upon completion, store the results into the desired output file. The Java implementation has the following syntax:
+The result of this command is, recursively search beginning from the provided directory and return files that match the given regular expression. Upon completion, store the results into the desired output file. The Java implementation has the following syntax:
 
 ```[Usage] JavaGrepImp regEx rootPath outFile ```
 
