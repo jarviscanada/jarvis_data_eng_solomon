@@ -3,10 +3,10 @@
 #### Table of contents
 
 * [Introduction](#Introduction)
-* [Hadoop Cluster](#Hadoop_Cluster)
-* [Big Data Tools](#Big_Data_Tools)
-* [Hardware Specifications](#Hardware_Specifications)
-* [Hive Project](#Hive_Project)
+* [Hadoop Cluster](#Hadoop-Cluster)
+* [Big Data Tools](#Big-Data-Tools)
+* [Hardware Specifications](#Hardware-Specifications)
+* [Hive Project](#Hive-Project)
 * [Improvements](#Improvements)
 
 # Introduction
