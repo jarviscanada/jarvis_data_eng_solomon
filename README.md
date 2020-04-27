@@ -3,4 +3,4 @@
 2. [Core Java Apps](./core_java/README.md) ***Completed***
 3. [Springboot Trading REST API](./springboot/README.md) ***Completed***
 4. [Hadoop Cluster & Hive](./hadoop/README.md) ***Completed***
-5. [Spark](./spark/README.md) **In Progress*
+5. [Spark](./spark/README.md) **In Progress**
