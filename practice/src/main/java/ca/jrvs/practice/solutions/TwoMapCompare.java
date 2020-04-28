@@ -9,7 +9,9 @@ public class TwoMapCompare<K, V> {
       return false;
     }
     
-    return m1.entrySet().stream().filter(entry -> m2.entrySet().contains(entry)).count() == m1.size();
+    return m1.entrySet().stream()
+               .filter(entry -> m2.entrySet().contains(entry))
+               .count() == m1.size();
   }
 
   public static void main (String[] args) {

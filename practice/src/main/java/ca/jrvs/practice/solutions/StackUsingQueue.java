@@ -4,7 +4,7 @@ import java.util.Deque;
 import java.util.LinkedList;
 
 public class StackUsingQueue<E> {
-  private Deque<E> queue;
+  private final Deque<E> queue;
   private int stackSize;
   
   StackUsingQueue(){
@@ -37,8 +37,6 @@ public class StackUsingQueue<E> {
     queue.push(queue.poll());
     return peeked;
   }
-  
-  
 
   public static void main (String[] args) {
     String first = "First";
@@ -59,7 +57,5 @@ public class StackUsingQueue<E> {
     
     System.out.println(stackUsingQueue.pop());
     System.out.println(stackUsingQueue.peek());
-    
   }
-  
 }

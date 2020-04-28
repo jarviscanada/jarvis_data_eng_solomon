@@ -1,7 +1,6 @@
 package main.java.ca.jrvs.practice.solutions;
 
 import java.util.ArrayList;
-import java.util.stream.IntStream;
 
 public class PrimeCount {
   /**
@@ -37,6 +36,6 @@ public class PrimeCount {
   }
 
   public static void main (String[] args) {
-    System.out.println(PrimeCount.primesLessThanN(120));
+    System.out.println(PrimeCount.primesLessThanN(15000 ));
   }
 }

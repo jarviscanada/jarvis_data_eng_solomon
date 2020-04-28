@@ -8,11 +8,11 @@ public class DuplicateCharacter {
     List<String> duplicates = new ArrayList<>();
     String[] letters = input.replaceAll(" ", "").split("");
     
-    for(String letter : letters) {
-      if (uniqueChar.contains(letter) == true){
-        duplicates.add(letter);
-      }
-    }
+//    for(String letter : letters) {
+//      if (uniqueChar.contains(letter) == true){
+//        duplicates.add(letter);
+//      }
+//    }
     return duplicates;
   }
 
