@@ -1,5 +1,3 @@
-import com.sun.xml.internal.bind.v2.TODO
-
 import scala.io.Source
 
 val file = Source.fromFile("/home/solomon/dev/jarvis_data_eng_solomon/spark/src/main/resources/employees.csv")
@@ -79,7 +77,7 @@ countryMap.getOrElse("edward", "n/a")
 val names = List("Amy", "Sam", "Eric", "Amy")
 //write you solution here
 
-val pairedList = names.zip(countryMap.values)
+val pairedList = names.map(key => (key, countryMap.getOrElse(key, "n/a")))
 
 /**
  * Map question3:
@@ -89,7 +87,8 @@ val pairedList = names.zip(countryMap.values)
  * hint: map(get_value_from_map) ; groupBy country; map to (country,count)
  */
 //write you solution here
-names.map(countryMap.getOrElse(_, "n/a")).groupBy(identity).mapValues(_.size)
+//pairedList.groupBy(identity).mapValues(_.size)
+pairedList.groupBy(_._2).mapValues(_.size)
 
 /**
  * number each name in the list from 1 to n
@@ -97,7 +96,8 @@ names.map(countryMap.getOrElse(_, "n/a")).groupBy(identity).mapValues(_.size)
  */
 val names2 = List("Amy", "Bob", "Chris", "Dann")
 //write you solution here
-val numberedNames = List.range(1, names2.size + 1).zip(names2)
+//val numberedNames = List.range(1, names2.size + 1).zip(names2)
+val numberedNames = names2 zip (Stream from 1)
 
 /**
  * SQL questions1:
@@ -115,7 +115,12 @@ val fileToList = file.getLines().toList
  * e.g. employees: List[Employee] = List(Employee(1,amy,toronto), Employee(2,bob,calgary), Employee(3,chris,toronto), Employee(4,dann,montreal))
  */
 //write you solution here
-val employeeList =
+case class Employee(id : Int, name : String, city: String, age: Int)
+
+var employeeList = fileToList
+  .drop(1)
+  .map(_.split(","))
+  .map({case Array(e1, e2, e3, e4) => Employee(e1.toInt, e2, e3, e4.toInt)})
 
 /**
  * SQL questions3:
@@ -128,8 +133,8 @@ val employeeList =
  * upperCity: List[Employee] = List(Employee(1,amy,TORONTO,20), Employee(2,bob,CALGARY,19), Employee(3,chris,TORONTO,20), Employee(4,dann,MONTREAL,21), Employee(5,eric,TORONTO,22))
  */
 //write you solution here
-val upperCity = employeeList.map(_.name.toUppercase)
-
+val upperCity = employeeList
+  .map({case Employee(id, name, city, age) => Employee(id, name, city.toUpperCase, age)})
 
 /**
  * SQL questions4:
@@ -143,7 +148,7 @@ val upperCity = employeeList.map(_.name.toUppercase)
  * res5: List[Employee] = List(Employee(1,amy,TORONTO,20), Employee(3,chris,TORONTO,20), Employee(5,eric,TORONTO,22))
  */
 //write you solution here
-
+val torontoEmployees = upperCity.filter(_.city.equalsIgnoreCase("toronto"))
 
 /**
  * SQL questions5:
@@ -158,7 +163,7 @@ val upperCity = employeeList.map(_.name.toUppercase)
  * cityNum: scala.collection.immutable.Map[String,Int] = Map(CALGARY -> 1, TORONTO -> 3, MONTREAL -> 1)
  */
 //write you solution here
-
+val cityNum = upperCity.groupBy(_.city).mapValues(_.size);
 
 /**
  * SQL questions6:
@@ -173,3 +178,6 @@ val upperCity = employeeList.map(_.name.toUppercase)
  * res6: scala.collection.immutable.Map[(String, Int),Int] = Map((MONTREAL,21) -> 1, (CALGARY,19) -> 1, (TORONTO,20) -> 2, (TORONTO,22) -> 1)
  */
 //write you solution here
+ val cityAgeNum = upperCity
+  .groupBy(employee => (employee.city, employee.age))
+  .mapValues(_.size)
