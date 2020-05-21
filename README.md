@@ -2,5 +2,5 @@
 1. [Linux cluster monitoring agent (Linux and SQL)](linux_sql/README.md) ***Completed***
 2. [Core Java Apps](core_java/README.md) ***Completed***
 3. [Springboot Trading REST API](springboot/README.md) ***Completed***
-4. [Hadoop Cluster & Hive](hadoop/README.md) ***Complete***
-5. [Spark](spark/README.md) *In Progress*
+4. [Hadoop Cluster & Hive](hadoop/README.md) ***Completed***
+5. [Spark](spark/README.md) **In Progress**
